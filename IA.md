@@ -59,6 +59,7 @@
 - [ ] Fin / secret / easter eggs
 - [ ] Audio : ambiances, bruits, musique
 - [x] Interface : menu d'accueil (écran noir, titre, boutons "New Game" / "Continue" / "Settings" avec `>> ` au survol — boutons inactifs pour l'instant)
+- [ ] Interface : police VHS pour les textes de menu (style OSD magnétoscope) — style appliqué (gris clair sur noir, blanc au survol) ; fichier de police à déposer dans `fonts/` par Guillaume (voir `fonts/README.md`), puis à assigner dans la scène
 - [ ] Interface : briefing de nuit, écran de game over, écran de victoire
 
 ## 4. Journal d'avancement
@@ -114,6 +115,20 @@
   - Le `>> ` au survol est une signature du menu (style FNaF) à conserver.
 - **Reste à faire :**
   - Brancher les boutons quand les autres scènes existeront (New Game → première nuit, Continue → reprise, Settings → réglages).
+  - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
+  - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
+  - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
+
+### 2026-11-05 — Police VHS pour les menus
+- **Fait :**
+  - Style VHS appliqué dans `scenes/main_menu.tscn` : titre et boutons en gris clair (`Color(0.85, 0.85, 0.85)`) sur fond noir, texte des boutons en blanc pur au survol (`font_hover_color`).
+  - Création de `fonts/README.md` : procédure pour déposer le fichier de police (VCR OSD Mono de Riciery Leal, gratuite, ou VT323 en OFL) et l'assigner au titre et aux boutons dans l'éditeur.
+- **Décidé (par Guillaume) :**
+  - Les écritures de menu doivent utiliser une police style VHS.
+  - La repo sera rendue **publique** (GitHub Pages gratuit pour les dépôts publics) — Guillaume s'en charge.
+- **Reste à faire :**
+  - Guillaume dépose le `.ttf` dans `fonts/` et l'assigne dans `scenes/main_menu.tscn` (ou via un `Theme` partagé `themes/main_theme.tres`).
+  - Guillaume rend la repo publique, active GitHub Pages (source : GitHub Actions) et pousse les fichiers pour déclencher le premier export web automatique.
   - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
   - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
   - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
