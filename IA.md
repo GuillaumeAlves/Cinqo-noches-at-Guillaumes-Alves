@@ -16,7 +16,7 @@
   - Ne jamais "adoucire" le jeu pour le rendre juste drôle, ni le rendre juste sérieux.
 - **Moteur :** Godot 4.6, renderer GL Compatibility (voir `project.godot`)
 - **Physique 3D :** Jolt Physics
-- **État actuel de la repo (au 2026-11-05) :** projet Godot squelette uniquement — `project.godot`, `icon.svg.import`, `.gitignore`, `LICENSE` (CC0), `README.md`. Aucun script, aucune scène, aucun asset de jeu pour l'instant.
+- **État actuel de la repo (au 2026-11-05) :** projet Godot squelette + **première scène 2D : le menu d'accueil** (`scenes/main_menu.tscn` + `scripts/main_menu.gd`, scène principale définie dans `project.godot`). Écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec préfixe `>> ` au survol (style FNaF). Les boutons ne font rien pour l'instant (aucune autre scène). Aucun asset de jeu pour l'instant — les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
 
 ## 2. Instructions permanentes — comment je dois procéder
 
@@ -58,7 +58,8 @@
 - [ ] Nuits, progression, difficulté
 - [ ] Fin / secret / easter eggs
 - [ ] Audio : ambiances, bruits, musique
-- [ ] Interface : menu, briefing de nuit, écran de game over, écran de victoire
+- [x] Interface : menu d'accueil (écran noir, titre, boutons "New Game" / "Continue" / "Settings" avec `>> ` au survol — boutons inactifs pour l'instant)
+- [ ] Interface : briefing de nuit, écran de game over, écran de victoire
 
 ## 4. Journal d'avancement
 
@@ -100,6 +101,20 @@
   - **Activation :** Super Clovis, White Paul-Henri et Joey Joestar sont **tous activés en même temps** dès le début, mais **tous n'arrivent pas au bureau la première nuit** (certains sont plus lents). Guillaume Alves n'arrive qu'à la nuit 5.
 - **Reste à faire :**
   - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3 quand il le racontera.
+  - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
+  - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
+
+### 2026-11-05 — Première scène 2D : le menu d'accueil
+- **Fait :**
+  - Création de `scenes/main_menu.tscn` : écran noir (`ColorRect`), titre "Five Nights at Guillaume Alves" en haut (centré), et en bas à gauche un `VBoxContainer` avec les boutons "New Game", "Continue", "Settings" (alignés à gauche).
+  - Création de `scripts/main_menu.gd` : au survol de la souris sur un bouton, un préfixe `>> ` apparaît devant le texte (comme dans le vrai FNaF) et disparaît quand la souris quitte le bouton. Les boutons ne font rien pour l'instant (aucune autre scène).
+  - `project.godot` : scène principale définie (`run/main_scene="res://scenes/main_menu.tscn"`).
+- **Décidé (par Guillaume) :**
+  - Première scène = menu d'accueil. Pour l'instant : écran noir + titre en haut + boutons en bas à gauche. Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume — ne pas créer d'assets 3D pour l'instant.
+  - Le `>> ` au survol est une signature du menu (style FNaF) à conserver.
+- **Reste à faire :**
+  - Brancher les boutons quand les autres scènes existeront (New Game → première nuit, Continue → reprise, Settings → réglages).
+  - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
   - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
   - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
 

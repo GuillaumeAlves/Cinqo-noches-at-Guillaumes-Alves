@@ -176,7 +176,7 @@
 - Sons de jumpscare : `À compléter`
 
 ### 3.10 Interface / écrans
-- Menu principal : `À compléter`
+- Menu principal : **écran noir, titre "Five Nights at Guillaume Alves" en haut, et en bas à gauche les boutons "New Game", "Continue" et "Settings"** (implémenté le 2026-11-05 dans `scenes/main_menu.tscn` + `scripts/main_menu.gd`). Comme dans le vrai FNaF, quand la souris passe sur un bouton, un **`>> `** apparaît devant le texte tant que la souris est sur le bouton. Les boutons ne font rien pour l'instant (aucune autre scène). Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
 - Briefing / appel de début de nuit : `À compléter`
 - HUD pendant la nuit (heure, énergie, caméra active...) : `À compléter`
 - Écran de game over : `À compléter`
@@ -201,6 +201,10 @@
 - `À compléter`
 
 ## 7. Historique des ajouts à ce fichier
+
+### 2026-11-05 — Menu d'accueil (première scène 2D)
+- **Menu principal implémenté** (§3.10) : écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec le préfixe `>> ` au survol (style FNaF). Boutons inactifs pour l'instant.
+- Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume — pour l'instant, uniquement des écrans 2D simples.
 
 ### 2026-11-05 — Création
 - Création de `LORE.md` avec la structure complète (pitch, histoire, animatronics, gameplay, nuits, jumpscares, fin, audio, interface, humour, horreur).
