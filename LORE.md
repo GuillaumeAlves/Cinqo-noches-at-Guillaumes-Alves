@@ -17,7 +17,7 @@
 - C'est un fangame FNaF : le joueur est presumably un gardien de nuit qui surveille un établissement pendant plusieurs nuits, face à des entités hostiles. *(À confirmer / préciser par Guillaume.)*
 - Le thème est totalement absurde (drôle) mais horrifique aussi.
 - Le nom "Guillaume Alves" est au centre du titre : son rôle dans l'histoire (fondateur ? victime ? esprit ? patron ?) est `À compléter`.
-- **Point clé du lore (2026-11-05) :** les personnages principaux **ne sont pas des animatronics**, mais des **esprits de morts pour la plupart**. Le "pour la plupart" laisse la porte ouverte à au moins un personnage qui ne serait pas un esprit de mort — lequel, et pourquoi, est `À compléter`.
+- **Point clé du lore (2026-11-05) :** les personnages principaux **ne sont pas des animatronics**, mais des **esprits de morts pour la plupart**. Le personnage qui n'est **pas** un esprit de mort est **Guillaume Alves** : c'est un homme vivant (ou mort ?) dans un costume — voir §2.2 et §2.3. Les trois autres (Super Clovis, White Paul-Henri, Joey Joestar) sont des esprits de morts.
 - **Gameplay (2026-11-05) :** comme un FNaF classique dans sa structure de base (surveiller, gérer les caméras / les approches, survivre jusqu'au bout de la nuit), mais les **fonctionnalités spéciales seront définies en fonction des personnages** — chaque esprit aura donc probablement sa propre mécanique particulière, à définir un par un avec Guillaume.
 
 ## 2. Histoire / Lore
@@ -30,21 +30,21 @@
 - Pourquoi les esprits sont hostiles : `À compléter` (ce sont des esprits de morts pour la plupart — voir §2.3)
 
 ### 2.2 Guillaume Alves (personnage central)
-- Qui est-il : `À compléter`
-- Son lien avec l'établissement : `À compléter`
-- Ce qui lui est arrivé : `À compléter`
-- Son rôle dans l'horreur : `À compléter`
+- Qui est-il : **un homme qui s'appelle Guillaume** (confirmé par Guillaume, 2026-11-05). Il est **mort**, et son esprit est allé **dans le costume de l'ours Alves** — c'est donc un esprit de mort *dans un costume*, et non un animatronic. C'est lui le personnage qui n'est pas un esprit de mort "classique" comme les trois autres (voir §2.3).
+- Son lien avec l'établissement : `À compléter` — le lore complet de Guillaume sera raconté par Guillaume ("ça sera long à dire"), et noté ici en détail quand il le racontera.
+- Ce qui lui est arrivé : `À compléter` — il est mort, et son esprit a rejoint le costume de l'ours Alves. Les circonstances de sa mort sont `À compléter`.
+- Son rôle dans l'horreur : `À compléter` — il n'arrive qu'à la nuit 5 (équivalent de Freddy), ce qui en fait la menace finale de la semaine.
 - Citations / phrases cultes éventuelles : `À compléter`
 
 ### 2.3 Les personnages principaux — les esprits
-> Ce ne sont **pas des animatronics** : ce sont des **esprits de morts pour la plupart**. Pour chaque personnage : nom, nature (esprit de mort ou autre), apparence, personnalité, origine, comportement, niveau de danger, mécanique spéciale, jumpscare, secrets.
+> Ce ne sont **pas des animatronics** : ce sont des **esprits de morts pour la plupart**. Le "pour la plupart" est maintenant clarifié : **Guillaume Alves n'est pas un esprit de mort comme les autres** — c'est un homme mort dont l'esprit est allé dans le costume de l'ours Alves (voir §2.2). Les trois autres (Super Clovis, White Paul-Henri, Joey Joestar) sont des esprits de morts. Pour chaque personnage : nom, nature (esprit de mort ou autre), apparence, personnalité, origine, comportement, niveau de danger, mécanique spéciale, jumpscare, secrets.
 >
 > **Correspondances avec FNaF (données par Guillaume, 2026-11-05) :**
 >
 > | Personnage | Équivalent FNaF | Rôle / timing |
 > |---|---|---|
 > | **Super Clovis** | Bonnie | Le plus agressif, apparaît en premier |
-> | **White Paul-Henri** | Chica | "L'entre deux" |
+> | **White Paul-Henri** | Chica | "L'entre deux" : pas trop agressif, mais pas super chill non plus |
 > | **Joey Joestar** | Foxy | `À compléter` |
 > | **Guillaume Alves** | Freddy | N'arrive qu'à la nuit 5 |
 >
@@ -64,7 +64,7 @@
 #### Personnage 2 — White Paul-Henri (équivalent de Chica)
 - Nom : **White Paul-Henri**
 - Nature : esprit de mort (à confirmer — voir note "pour la plupart" au §2.3)
-- Rôle : **"l'entre deux"** — c'est l'équivalent de Chica dans FNaF. Le sens exact de "l'entre deux" (entre Super Clovis et Joey Joestar ? entre deux autres personnages ? entre la vie et la mort ?) est `À compléter`.
+- Rôle : **"l'entre deux"** — c'est l'équivalent de Chica dans FNaF. Guillaume a précisé (2026-11-05) : "l'entre deux" veut dire **pas trop agressif, mais pas super chill non plus** — un niveau d'agressivité intermédiaire entre Super Clovis (le plus agressif) et un personnage totalement passif.
 - Apparence : `À compléter` (le "White" de son nom suggère une apparence blanche / pâle — à confirmer par Guillaume)
 - Personnalité / comportement : `À compléter`
 - Origine dans le lore : `À compléter` — qui était Paul-Henri de son vivant ? Comment est-il mort ?
@@ -85,11 +85,11 @@
 
 #### Personnage 4 — Guillaume Alves (équivalent de Freddy)
 - Nom : **Guillaume Alves** — le personnage central du titre du jeu
-- Nature : `À compléter` — esprit de mort ou autre ? C'est possiblement le personnage qui n'est **pas** un esprit de mort (le "pour la plupart" du §2.3), mais ce n'est **pas confirmé**.
+- Nature : **pas un esprit de mort comme les autres** — c'est un homme mort dont l'esprit est allé dans le costume de l'ours Alves (voir §2.2). C'est le personnage qui explique le "pour la plupart" du §2.3.
 - Rôle : l'équivalent de **Freddy** dans FNaF, avec une particularité majeure : **il n'arrive qu'à la nuit 5**. Il est donc absent des nuits 1 à 4 et constitue le boss / la menace finale de la semaine.
 - Apparence : `À compléter`
 - Personnalité / comportement : `À compléter`
-- Origine dans le lore : `À compléter` — qui est Guillaume Alves dans l'histoire ? Fondateur de l'établissement ? Victime ? Le joueur lui-même ? Quelque chose d'autre ?
+- Origine dans le lore : `À compléter` — Guillaume était un homme nommé Guillaume, il est mort, et son esprit a rejoint le costume de l'ours Alves. Le lore complet (circonstances de sa mort, lien avec l'établissement, pourquoi le costume de l'ours Alves...) sera raconté par Guillaume et noté ici en détail.
 - Mécanique de jeu : `À compléter` — fonctionnalité spéciale propre à ce personnage, à définir (spécifique à la nuit 5)
 - Jumpscare : `À compléter`
 - Nuits où il est actif : **nuit 5 uniquement** (confirmé). Niveau d'agressivité : `À compléter`
@@ -145,12 +145,12 @@
 - Comment ils choisissent leur cible / leur chemin : `À compléter`
 - Difficulté par nuit (tableau des niveaux d'agressivité) : `À compléter`
 - Comportements spéciaux (ils entendent, ils voient la lumière, ils détestent quelque chose...) : `À compléter`
-- **Ordre d'apparition connu :** Super Clovis apparaît en premier (le plus agressif), puis White Paul-Henri ("l'entre deux"), puis Joey Joestar, et Guillaume Alves **uniquement à la nuit 5**. L'ordre exact d'activation de White Paul-Henri et Joey Joestar (quelle nuit chacun devient actif) est `À compléter`.
+- **Activation (2026-11-05) :** à part Guillaume Alves, **Super Clovis, White Paul-Henri et Joey Joestar sont tous activés en même temps** (dès le début). Mais **tous n'arrivent pas au bureau la première nuit** : certains sont plus lents que d'autres. Super Clovis, le plus agressif, est celui qui arrive en premier ; les autres mettent plus de temps à atteindre le bureau la première nuit. Guillaume Alves, lui, n'arrive **qu'à la nuit 5**.
 
 ### 3.6 Les nuits — progression
 | Nuit | Nouveautés | Animatronics actifs | Difficulté |
 |------|-----------|---------------------|------------|
-| Nuit 1 | `À compléter` | Super Clovis (apparaît en premier, le plus agressif) — autres : `À compléter` | `À compléter` |
+| Nuit 1 | `À compléter` | Super Clovis, White Paul-Henri et Joey Joestar **tous activés en même temps**, mais **tous n'arrivent pas au bureau la première nuit** (certains sont plus lents). Super Clovis arrive en premier (le plus agressif). | `À compléter` |
 | Nuit 2 | `À compléter` | `À compléter` (White Paul-Henri et/ou Joey Joestar ?) | `À compléter` |
 | Nuit 3 | `À compléter` | `À compléter` | `À compléter` |
 | Nuit 4 | `À compléter` | `À compléter` | `À compléter` |
@@ -205,6 +205,11 @@
 ### 2026-11-05 — Création
 - Création de `LORE.md` avec la structure complète (pitch, histoire, animatronics, gameplay, nuits, jumpscares, fin, audio, interface, humour, horreur).
 - Aucun contenu canon raconté pour l'instant : tout est marqué `À compléter` en attente de la narration de Guillaume.
+
+### 2026-11-05 — Précisions : "l'entre deux", Guillaume en costume, activation simultanée
+- **"L'entre deux" de White Paul-Henri :** pas trop agressif, mais pas super chill non plus — agressivité intermédiaire.
+- **Guillaume Alves n'est pas un esprit de mort comme les autres :** c'est un homme nommé Guillaume, mort, dont l'esprit est allé dans le costume de l'ours Alves. C'est lui qui explique le "pour la plupart". Le lore complet de Guillaume sera raconté par Guillaume ("ça sera long à dire") et noté en détail à ce moment-là.
+- **Activation :** Super Clovis, White Paul-Henri et Joey Joestar sont **tous activés en même temps** (dès le début), mais **tous n'arrivent pas au bureau la première nuit** car certains sont plus lents. Guillaume Alves n'arrive qu'à la nuit 5.
 
 ### 2026-11-05 — Gameplay de base & les 4 esprits
 - **Gameplay :** FNaF classique dans sa base, avec des fonctionnalités spéciales définies **en fonction des personnages** (à définir un par un).

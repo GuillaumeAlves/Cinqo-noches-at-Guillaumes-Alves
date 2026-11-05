@@ -52,7 +52,7 @@
 - [ ] Boucle de jeu de base : FNaF classique (confirmé), 5 nuits (à confirmer), fonctionnalités spéciales par personnage (à définir)
 - [ ] Bureau du joueur / poste de surveillance
 - [ ] Système de caméras
-- [ ] Les 4 esprits : Super Clovis (Bonnie, le plus agressif, en premier), White Paul-Henri (Chica, "l'entre deux"), Joey Joestar (Foxy), Guillaume Alves (Freddy, nuit 5 uniquement) — comportements, IA par nuit, mécaniques spéciales à définir
+- [ ] Les 4 personnages : Super Clovis (Bonnie, le plus agressif, en premier), White Paul-Henri (Chica, "l'entre deux" = pas trop agressif mais pas super chill), Joey Joestar (Foxy), Guillaume Alves (Freddy, nuit 5 uniquement, homme mort dans le costume de l'ours Alves) — comportements, IA par nuit, mécaniques spéciales à définir. Les 3 premiers sont activés en même temps dès le début, mais tous n'arrivent pas au bureau la première nuit (certains plus lents)
 - [ ] Mécaniques de défense / survie (portes, lumière, bruit, énergie...)
 - [ ] Jumpscares et game over
 - [ ] Nuits, progression, difficulté
@@ -90,6 +90,18 @@
   - Préciser pour chaque esprit : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, nuits d'activation.
   - Clarifier "l'entre deux" de White Paul-Henri et le "pour la plupart" (qui n'est pas un esprit de mort ?).
   - Continuer la narration du lore (établissement, histoire, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
+
+### 2026-11-05 — Précisions : "l'entre deux", Guillaume en costume, activation simultanée
+- **Fait :**
+  - `LORE.md` mis à jour : §1.1, §2.2 (Guillaume Alves : homme mort, esprit dans le costume de l'ours Alves), §2.3 (tableau + fiches White Paul-Henri et Guillaume Alves), §3.5 (activation), §3.6 (nuit 1), historique §7.
+- **Décidé (canon, par Guillaume) :**
+  - **"L'entre deux"** de White Paul-Henri = pas trop agressif, mais pas super chill non plus (agressivité intermédiaire).
+  - **Guillaume Alves n'est pas un esprit de mort comme les autres** : c'est un homme nommé Guillaume, mort, dont l'esprit est allé dans le costume de l'ours Alves. C'est lui le "pour la plupart".
+  - **Activation :** Super Clovis, White Paul-Henri et Joey Joestar sont **tous activés en même temps** dès le début, mais **tous n'arrivent pas au bureau la première nuit** (certains sont plus lents). Guillaume Alves n'arrive qu'à la nuit 5.
+- **Reste à faire :**
+  - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3 quand il le racontera.
+  - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
+  - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
 
 ---
 
