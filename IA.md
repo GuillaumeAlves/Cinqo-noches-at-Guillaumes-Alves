@@ -49,10 +49,10 @@
 
 > Section de planification — pas encore du canon tant que Guillaume ne l'a pas validé dans `LORE.md`.
 
-- [ ] Boucle de jeu de base : 5 nuits (ou autre structure à définir)
+- [ ] Boucle de jeu de base : FNaF classique (confirmé), 5 nuits (à confirmer), fonctionnalités spéciales par personnage (à définir)
 - [ ] Bureau du joueur / poste de surveillance
 - [ ] Système de caméras
-- [ ] Animatronics : liste, comportements, IA par nuit
+- [ ] Les 4 esprits : Super Clovis (Bonnie, le plus agressif, en premier), White Paul-Henri (Chica, "l'entre deux"), Joey Joestar (Foxy), Guillaume Alves (Freddy, nuit 5 uniquement) — comportements, IA par nuit, mécaniques spéciales à définir
 - [ ] Mécaniques de défense / survie (portes, lumière, bruit, énergie...)
 - [ ] Jumpscares et game over
 - [ ] Nuits, progression, difficulté
@@ -74,6 +74,22 @@
   - Guillaume raconte l'histoire et le gameplay → remplissage détaillé de `LORE.md`.
   - Définir la structure des nuits, les animatronics et les mécaniques.
   - Créer la première scène / le premier prototype jouable.
+
+### 2026-11-05 — Gameplay de base & les 4 esprits
+- **Fait :**
+  - `LORE.md` mis à jour en détail : §1.1 (esprits de morts, gameplay FNaF classique + spéciales par personnage), §2.3 renommé "Les personnages principaux — les esprits" avec tableau de correspondance FNaF et fiches pour les 4 personnages, §3.1 / §3.5 / §3.6 / §3.7 mis à jour, historique §7 complété.
+  - `IA.md` §3 mis à jour avec les 4 personnages et leurs équivalences.
+- **Décidé (canon, par Guillaume) :**
+  - Gameplay : FNaF classique en base ; fonctionnalités spéciales définies en fonction des personnages.
+  - Les personnages principaux ne sont **pas des animatronics** mais des **esprits de morts pour la plupart**.
+  - **Super Clovis** = équivalent de Bonnie, le plus agressif, apparaît en premier.
+  - **White Paul-Henri** = équivalent de Chica, "l'entre deux".
+  - **Joey Joestar** = équivalent de Foxy.
+  - **Guillaume Alves** = équivalent de Freddy, n'arrive **qu'à la nuit 5**.
+- **Reste à faire :**
+  - Préciser pour chaque esprit : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, nuits d'activation.
+  - Clarifier "l'entre deux" de White Paul-Henri et le "pour la plupart" (qui n'est pas un esprit de mort ?).
+  - Continuer la narration du lore (établissement, histoire, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
 
 ---
 
