@@ -32,6 +32,9 @@ jobs:
           fi
           ls -la ~/.local/share/godot/export_templates/
 
+      - name: Import assets (nouvelles images de rendus)
+        run: godot --headless --import || true
+
       - name: Export Web (no threads, GitHub Pages compatible)
         run: |
           mkdir -vp build/web

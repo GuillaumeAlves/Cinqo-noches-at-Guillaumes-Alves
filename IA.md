@@ -16,7 +16,7 @@
   - Ne jamais "adoucire" le jeu pour le rendre juste drôle, ni le rendre juste sérieux.
 - **Moteur :** Godot 4.6, renderer GL Compatibility (voir `project.godot`)
 - **Physique 3D :** Jolt Physics
-- **État actuel de la repo (au 2026-11-06) :** projet Godot squelette + **première scène 2D : le menu d'accueil** (`scenes/main_menu.tscn` + `scripts/main_menu.gd`, scène principale définie dans `project.godot`). Écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec préfixe `>> ` au survol (style FNaF). Les boutons ne font rien pour l'instant (aucune autre scène). La **police VHS VT323** (OFL) est intégrée : fichier `fonts/VT323-Regular.ttf` + `Theme` partagé `themes/main_theme.tres` assigné au menu. **Export web automatisé** via GitHub Actions (`.github/workflows/deploy_web.yml`) : build Godot 4.6.3 sans threads et déploiement sur GitHub Pages à chaque push sur `main`. Aucun asset de jeu pour l'instant — les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
+- **État actuel de la repo (au 2026-11-06, fin de journée) :** **base de jeu FNaF jouable** : menu branché, 5 nuits, bureau scrollable, portes/lumières/énergie, 11 caméras, IA des 4 esprits, jumpscares, game over, victoire de nuit, fin provisoire, sauvegarde navigateur. Tous les visuels sont des formes géométriques temporaires remplaçables par images (`assets/renders/README.md`). Historique : projet Godot squelette + **première scène 2D : le menu d'accueil** (`scenes/main_menu.tscn` + `scripts/main_menu.gd`, scène principale définie dans `project.godot`). Écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec préfixe `>> ` au survol (style FNaF). Les boutons ne font rien pour l'instant (aucune autre scène). La **police VHS VT323** (OFL) est intégrée : fichier `fonts/VT323-Regular.ttf` + `Theme` partagé `themes/main_theme.tres` assigné au menu. **Export web automatisé** via GitHub Actions (`.github/workflows/deploy_web.yml`) : build Godot 4.6.3 sans threads et déploiement sur GitHub Pages à chaque push sur `main`. Aucun asset de jeu pour l'instant — les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
 
 ## 2. Instructions permanentes — comment je dois procéder
 
@@ -49,19 +49,21 @@
 
 > Section de planification — pas encore du canon tant que Guillaume ne l'a pas validé dans `LORE.md`.
 
-- [ ] Boucle de jeu de base : FNaF classique (confirmé), 5 nuits (à confirmer), fonctionnalités spéciales par personnage (à définir)
-- [ ] Bureau du joueur / poste de surveillance
-- [ ] Système de caméras
+- [x] Boucle de jeu de base : FNaF classique, 5 nuits (confirmé), 12 AM → 6 AM — fonctionnalités spéciales par personnage encore à définir
+- [x] Bureau du joueur : scroll horizontal, portes, lumières, énergie (`scripts/game/office.gd`)
+- [x] Système de caméras : 11 caméras, carte, neige, brouillage (plan provisoire FNaF 1)
+- [x] Sauvegarde de la progression dans le navigateur (`scripts/autoload/save_manager.gd`, `user://save.cfg` → IndexedDB sur le web)
+- [x] Visuels remplaçables : `RenderSlot` + `assets/renders/` (formes temporaires dans `scripts/visuals/placeholders.gd`)
 - [ ] Les 4 personnages : Super Clovis (Bonnie, le plus agressif, en premier), White Paul-Henri (Chica, "l'entre deux" = pas trop agressif mais pas super chill), Joey Joestar (Foxy), Guillaume Alves (Freddy, nuit 5 uniquement, homme mort dans le costume de l'ours Alves) — comportements, IA par nuit, mécaniques spéciales à définir. Les 3 premiers sont activés en même temps dès le début, mais tous n'arrivent pas au bureau la première nuit (certains plus lents)
 - [ ] Mécaniques de défense / survie (portes, lumière, bruit, énergie...)
-- [ ] Jumpscares et game over
+- [x] Jumpscares et game over (version simple, image fixe zoomée)
 - [ ] Nuits, progression, difficulté
 - [ ] Fin / secret / easter eggs
 - [ ] Audio : ambiances, bruits, musique
 - [x] Interface : menu d'accueil (écran noir, titre, boutons "New Game" / "Continue" / "Settings" avec `>> ` au survol — boutons inactifs pour l'instant)
 - [x] Interface : police VHS pour les textes de menu — **VT323** (Google Fonts, licence OFL) déposée dans `fonts/VT323-Regular.ttf`, intégrée via le `Theme` partagé `themes/main_theme.tres` (police par défaut + couleurs gris clair / blanc au survol) assigné au menu
 - [x] Export web + déploiement GitHub Pages automatisés (`.github/workflows/deploy_web.yml` : Godot 4.6.3, export **sans threads** pour être compatible Pages)
-- [ ] Interface : briefing de nuit, écran de game over, écran de victoire
+- [x] Interface : écran « 12:00 AM / Night N », écran de game over, écran « 6 AM », écran de fin provisoire
 
 ## 4. Journal d'avancement
 
@@ -149,6 +151,19 @@
   - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
   - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
   - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
+
+### 2026-11-06 — Base de jeu FNaF complète
+- **Fait :**
+  - `scripts/data/game_config.gd` : tous les réglages (durée des heures, énergie, niveaux d'IA par nuit, caméras, scènes).
+  - `scripts/autoload/save_manager.gd` (autoload `SaveManager`) : nuit courante / max / jeu terminé, sauvegardés dans `user://save.cfg` (IndexedDB du navigateur sur la version web).
+  - `scripts/visuals/render_slot.gd` (`RenderSlot`) : chaque visuel cherche `assets/renders/<nom>[_<état>].png|jpg|webp`, sinon dessine une forme de `scripts/visuals/placeholders.gd`. Liste complète des noms/tailles : `assets/renders/README.md`.
+  - `scripts/game/night_ai.gd` (`NightAI`) : IA FNaF 1 (jet 1-20 ≤ niveau), chemins des 4 esprits, Joey (cachette + course), Guillaume (nuit 5, bloqué quand on le regarde).
+  - `scripts/game/office.gd` + `scenes/office.tscn` : bureau 1920 px scrollable (souris aux bords, flèches, Q/D), portes/lumières, énergie et panne, tablette caméras (survol de la barre ou Espace), HUD, jumpscare. Les nœuds sont construits en code ; positions en constantes en haut du fichier.
+  - Scènes `night_intro`, `night_win`, `game_over`, `ending` ; menu branché (New Game / Continue avec « Night N » au survol / étoile si jeu fini). Résolution fixée à 1280 × 720 (stretch `canvas_items`).
+  - Workflow : ajout d'une étape `godot --headless --import` pour que les nouvelles images soient importées en CI.
+  - Testé en local (Godot 4.6.3) : import sans erreur, simulation de nuit (déplacements, porte fermée qui renvoie l'esprit, attaques), sauvegarde/rechargement, détection d'une image déposée, captures d'écran de toutes les scènes.
+- **Décidé (par l'IA, à valider) :** valeurs et chemins de FNaF 1 ; noms de pièces en anglais ; attaquant de la panne = Super Clovis ; passage direct à la nuit suivante après « 6 AM » ; textes d'écran de fin provisoires.
+- **Reste à faire :** sons (aucun pour l'instant), appel téléphonique, effet de perspective « fausse 3D » du bureau (shader façon FNaF, optionnel), Settings, nuit 6 / custom night, mécaniques spéciales par esprit, vrais rendus 3D.
 
 ---
 
