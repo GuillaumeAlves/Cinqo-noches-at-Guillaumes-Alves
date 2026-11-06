@@ -176,7 +176,7 @@
 - Sons de jumpscare : `À compléter`
 
 ### 3.10 Interface / écrans
-- Menu principal : **écran noir, titre "Five Nights at Guillaume Alves" en haut, et en bas à gauche les boutons "New Game", "Continue" et "Settings"** (implémenté le 2026-11-05 dans `scenes/main_menu.tscn` + `scripts/main_menu.gd`). Comme dans le vrai FNaF, quand la souris passe sur un bouton, un **`>> `** apparaît devant le texte tant que la souris est sur le bouton. Les boutons ne font rien pour l'instant (aucune autre scène). Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
+- Menu principal : **écran noir, titre "Five Nights at Guillaume Alves" en haut, et en bas à gauche les boutons "New Game", "Continue" et "Settings"** (implémenté le 2026-11-05 dans `scenes/main_menu.tscn` + `scripts/main_menu.gd`). Comme dans le vrai FNaF, quand la souris passe sur un bouton, un **`>> `** apparaît devant le texte tant que la souris est sur le bouton. Les boutons ne font rien pour l'instant (aucune autre scène). Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume. Depuis le 2026-11-06, le menu utilise la **police VHS VT323** (voir ci-dessous) via un `Theme` partagé, et le jeu est **exporté en Web et publié sur GitHub Pages** automatiquement à chaque push (voir §7).
 - Briefing / appel de début de nuit : `À compléter`
 - HUD pendant la nuit (heure, énergie, caméra active...) : `À compléter`
 - Écran de game over : `À compléter`
@@ -201,6 +201,10 @@
 - `À compléter`
 
 ## 7. Historique des ajouts à ce fichier
+
+### 2026-11-06 — Police VHS intégrée + publication web automatique
+- **Police VHS :** le menu utilise maintenant la police **VT323** (Google Fonts, licence OFL) — fichier `fonts/VT323-Regular.ttf` + `Theme` partagé `themes/main_theme.tres` assigné au menu (§3.10). Les couleurs restent gris clair sur noir, blanc au survol.
+- **Publication web :** le jeu est **exporté en Web et publié sur GitHub Pages** automatiquement à chaque push sur `main` (workflow `.github/workflows/deploy_web.yml`). Export **sans threads** pour être compatible GitHub Pages.
 
 ### 2026-11-05 — Menu d'accueil (première scène 2D)
 - **Menu principal implémenté** (§3.10) : écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec le préfixe `>> ` au survol (style FNaF). Boutons inactifs pour l'instant.

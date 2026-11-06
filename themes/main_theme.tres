@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=2 format=3]
+
+[ext_resource type="FontFile" uid="uid://beu7nylb7wm6m" path="res://fonts/VT323-Regular.ttf" id="1_font"]
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 32
+Button/colors/font_color = Color(0.85, 0.85, 0.85, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Label/colors/font_color = Color(0.85, 0.85, 0.85, 1)
