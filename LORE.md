@@ -119,19 +119,28 @@
 ### 3.1 Boucle de jeu générale
 - **Base : un FNaF classique** (confirmé par Guillaume, 2026-11-05) — surveiller l'établissement, gérer les approches des esprits, survivre jusqu'au bout de chaque nuit.
 - **Spécificité :** les **fonctionnalités spéciales seront définies en fonction des personnages** — chaque esprit (Super Clovis, White Paul-Henri, Joey Joestar, Guillaume Alves) aura probablement sa propre mécanique particulière, à définir un par un. La base reste classique, les exceptions sont par personnage.
-- Nombre de nuits : `À compléter` (5 par défaut dans un FNaF, et Guillaume Alves n'arrive qu'à la nuit 5 — ce qui suggère au moins 5 nuits, à confirmer)
-- Durée d'une nuit : `À compléter`
-- Objectif de chaque nuit : survivre jusqu'à `À compléter` (6h ? autre ?)
-- Condition de défaite : `À compléter`
-- Condition de victoire (fin du jeu) : `À compléter`
+- Nombre de nuits : **5** (confirmé par Guillaume le 2026-11-06 : « le système de nuits jusqu'à la nuit cinq »). Nuit 6 / nuit personnalisée : `À compléter`.
+- Durée d'une nuit : 12 AM → 6 AM, **86 s réelles par heure** (≈ 8 min 36 s, proche de FNaF 1) — valeur provisoire.
+- Objectif de chaque nuit : survivre jusqu'à **6 AM** (base FNaF, demandé par Guillaume : compteur de temps avant la fin de la nuit).
+- Condition de défaite : un esprit entre dans le bureau et attaque (jumpscare), ou panne d'énergie puis attaque dans le noir.
+- Condition de victoire (fin du jeu) : survivre aux 5 nuits → écran de fin provisoire. Vraie fin : `À compléter`.
+- **Progression sauvegardée** dans le navigateur (nuit atteinte, jeu terminé) : « Continue » reprend la nuit sauvegardée, « New Game » repart de la nuit 1.
 
 ### 3.2 Le bureau / le poste du joueur
+
+#### Base implémentée (2026-11-06) — FNaF 1 classique, valeurs par défaut à valider
+> Demandé par Guillaume : « une base de FNaF normal ». Tout ce qui suit reprend **les règles de FNaF 1** comme base technique ; les valeurs (chiffres, chemins, noms de pièces) sont **provisoires** et réglables dans `scripts/data/game_config.gd`. Ce n'est pas du lore : à remplacer dès que Guillaume définit les vraies mécaniques.
+- **Implémenté :** bureau large (1920 px pour un écran de 1280) : on « tourne la tête » en approchant la souris des bords (ou flèches / Q / D), comme FNaF. Porte + bouton porte + bouton lumière de chaque côté. La lumière montre qui est devant la porte. Une porte fermée renvoie l'esprit en arrière. Si un esprit entre, les boutons de son côté ne répondent plus.
+- **Énergie (base FNaF 1) :** 100 % au départ, consommation selon l'utilisation (1 barre de base + 1 par porte fermée, lumière allumée, caméra ouverte). À 0 % : tout s'éteint, portes ouvertes, noir, puis attaque après quelques secondes (attaquant provisoire : Super Clovis — **piste à valider**, Guillaume Alves n'étant présent qu'en nuit 5).
+
 - Description du bureau : `À compléter`
 - Portes / fenêtres / lumières : `À compléter`
 - Énergie / électricité : `À compléter` (y a-t-il une jauge d'énergie comme dans FNaF 1 ?)
 - Objets interactifs : `À compléter`
 
 ### 3.3 Les caméras
+- **Implémenté (provisoire, plan de FNaF 1) :** barre en bas de l'écran à survoler (ou Espace) pour lever/baisser la tablette, carte avec 11 boutons de caméras, panoramique lent, neige, « REC », brouillage quand un esprit bouge dans la caméra regardée. Pièces (noms provisoires, en anglais comme le menu) : 1A Show Stage, 1B Dining Area, 1C Hidden Corner (cachette de Joey), 2A West Hall, 2B W. Hall Corner, 3 Supply Closet, 4A East Hall, 4B E. Hall Corner, 5 Backstage, 6 Kitchen (audio seulement), 7 Restrooms.
+
 - Nombre de caméras et pièces surveillées : `À compléter`
 - Plan / carte de l'établissement : `À compléter`
 - Particularités (caméra cassée, interférences, caméra spéciale...) : `À compléter`
@@ -143,7 +152,17 @@
 ### 3.5 L'IA des esprits
 - Comment ils se déplacent : `À compléter` (ce sont des esprits, pas des animatronics : leurs déplacements peuvent donc être différents — traverser les murs ? apparaître ? — à définir par Guillaume)
 - Comment ils choisissent leur cible / leur chemin : `À compléter`
-- Difficulté par nuit (tableau des niveaux d'agressivité) : `À compléter`
+- Difficulté par nuit (tableau des niveaux d'agressivité) — **valeurs provisoires** (niveau 0-20, système FNaF 1 : toutes les ~5 s, jet de 1 à 20 ≤ niveau → l'esprit avance) :
+
+  | Esprit | N1 | N2 | N3 | N4 | N5 | Bonus horaire |
+  |---|---|---|---|---|---|---|
+  | Super Clovis | 3 | 6 | 9 | 12 | 15 | +1 à 2, 3, 4 AM |
+  | White Paul-Henri | 1 | 3 | 6 | 9 | 12 | +1 à 3, 4 AM |
+  | Joey Joestar | 1 | 2 | 5 | 8 | 11 | +1 à 3, 4 AM |
+  | Guillaume Alves | 0 | 0 | 0 | 0 | 6 | — |
+
+  Respecte le canon : les 3 premiers actifs dès la nuit 1, Clovis le plus rapide, Paul-Henri l'entre-deux, Guillaume Alves seulement nuit 5.
+- **Chemins provisoires (base FNaF 1) :** Super Clovis → côté **gauche** (1A → 1B / 5 → 2A / 3 → 2B → porte gauche), comme Bonnie. White Paul-Henri → côté **droit** (1A → 1B → 7 / 6 → 4A → 4B → porte droite), comme Chica. Joey Joestar → cachette 1C en 4 étapes (rideau fermé, il regarde, il sort, parti) ; il n'avance **que si on ne regarde pas les caméras**, puis court dans 2A vers la porte gauche (porte fermée = il frappe et vole de l'énergie : 1 %, puis +5 % à chaque fois), comme Foxy. Guillaume Alves → côté droit, **ne bouge pas quand on le regarde**, entre quand on regarde une autre caméra que 4B, comme Freddy.
 - Comportements spéciaux (ils entendent, ils voient la lumière, ils détestent quelque chose...) : `À compléter`
 - **Activation (2026-11-05) :** à part Guillaume Alves, **Super Clovis, White Paul-Henri et Joey Joestar sont tous activés en même temps** (dès le début). Mais **tous n'arrivent pas au bureau la première nuit** : certains sont plus lents que d'autres. Super Clovis, le plus agressif, est celui qui arrive en premier ; les autres mettent plus de temps à atteindre le bureau la première nuit. Guillaume Alves, lui, n'arrive **qu'à la nuit 5**.
 
@@ -158,6 +177,7 @@
 | Nuit 6 / Nuit personnalisée / Nuit secrète | `À compléter` | `À compléter` | `À compléter` |
 
 ### 3.7 Jumpscares & game over
+- **Implémenté (provisoire) :** jumpscare = visage géant zoomé + secousse (~1 s), puis écran de mort (neige + « GAME OVER » + numéro de nuit), retour au menu. « Continue » reprend la même nuit.
 - `À compléter` — pour chaque esprit : à quoi ressemble le jumpscare, le son, ce qui se passe après.
   - Super Clovis : `À compléter`
   - White Paul-Henri : `À compléter`
@@ -177,10 +197,12 @@
 
 ### 3.10 Interface / écrans
 - Menu principal : **écran noir, titre "Five Nights at Guillaume Alves" en haut, et en bas à gauche les boutons "New Game", "Continue" et "Settings"** (implémenté le 2026-11-05 dans `scenes/main_menu.tscn` + `scripts/main_menu.gd`). Comme dans le vrai FNaF, quand la souris passe sur un bouton, un **`>> `** apparaît devant le texte tant que la souris est sur le bouton. Les boutons ne font rien pour l'instant (aucune autre scène). Les rendus 3D des scènes et personnages seront créés plus tard par Guillaume. Depuis le 2026-11-06, le menu utilise la **police VHS VT323** (voir ci-dessous) via un `Theme` partagé, et le jeu est **exporté en Web et publié sur GitHub Pages** automatiquement à chaque push (voir §7).
-- Briefing / appel de début de nuit : `À compléter`
-- HUD pendant la nuit (heure, énergie, caméra active...) : `À compléter`
-- Écran de game over : `À compléter`
-- Écran de victoire : `À compléter`
+- Menu (2026-11-06) : **New Game** lance la nuit 1, **Continue** reprend la nuit sauvegardée (« Night N » affiché au survol), **Settings** inactif. Une étoile apparaît sous le titre quand les 5 nuits sont finies.
+- Briefing / appel de début de nuit : écran « 12:00 AM / Night N » (3 s, comme FNaF). Appel téléphonique : `À compléter`
+- HUD pendant la nuit : heure en haut à droite + numéro de nuit, « Power left » + barres d'utilisation en bas à gauche, barre des caméras en bas.
+- Écran de game over : neige + « GAME OVER » (voir §3.7).
+- Écran de victoire : « 5 AM » qui roule vers « 6 AM », puis nuit suivante directement. Après la nuit 5 : écran de fin **provisoire** (texte à remplacer).
+- **Visuels :** tout est en formes géométriques temporaires, remplaçables une par une par les rendus 3D de Guillaume en déposant les images dans `assets/renders/` (liste et tailles : `assets/renders/README.md`).
 
 ## 4. Humour absurde — éléments comiques du jeu
 
@@ -201,6 +223,10 @@
 - `À compléter`
 
 ## 7. Historique des ajouts à ce fichier
+
+### 2026-11-06 — Base de jeu FNaF complète (provisoire)
+- **Confirmé par Guillaume :** 5 nuits ; base de « FNaF normal » ; compteur de temps jusqu'à la fin de la nuit ; nuits sauvegardées dans le navigateur ; écran de mort et écran de victoire ; bureau qu'on regarde en tournant la tête (scroll horizontal) ; personnages en formes géométriques simples, remplacés plus tard par ses rendus 3D réalistes (« fausse 3D »).
+- **Ajouté (valeurs provisoires FNaF 1, non canon) :** énergie, portes, lumières, plan des caméras, chemins et niveaux d'IA des esprits, panne de courant — détaillés aux §3.1 à §3.10.
 
 ### 2026-11-06 — Police VHS intégrée + publication web automatique
 - **Police VHS :** le menu utilise maintenant la police **VT323** (Google Fonts, licence OFL) — fichier `fonts/VT323-Regular.ttf` + `Theme` partagé `themes/main_theme.tres` assigné au menu (§3.10). Les couleurs restent gris clair sur noir, blanc au survol.
