@@ -16,7 +16,7 @@
   - Ne jamais "adoucire" le jeu pour le rendre juste drôle, ni le rendre juste sérieux.
 - **Moteur :** Godot 4.6, renderer GL Compatibility (voir `project.godot`)
 - **Physique 3D :** Jolt Physics
-- **État actuel de la repo (au 2026-11-05) :** projet Godot squelette + **première scène 2D : le menu d'accueil** (`scenes/main_menu.tscn` + `scripts/main_menu.gd`, scène principale définie dans `project.godot`). Écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec préfixe `>> ` au survol (style FNaF). Les boutons ne font rien pour l'instant (aucune autre scène). Aucun asset de jeu pour l'instant — les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
+- **État actuel de la repo (au 2026-11-06) :** projet Godot squelette + **première scène 2D : le menu d'accueil** (`scenes/main_menu.tscn` + `scripts/main_menu.gd`, scène principale définie dans `project.godot`). Écran noir, titre en haut, boutons "New Game" / "Continue" / "Settings" en bas à gauche, avec préfixe `>> ` au survol (style FNaF). Les boutons ne font rien pour l'instant (aucune autre scène). La **police VHS VT323** (OFL) est intégrée : fichier `fonts/VT323-Regular.ttf` + `Theme` partagé `themes/main_theme.tres` assigné au menu. **Export web automatisé** via GitHub Actions (`.github/workflows/deploy_web.yml`) : build Godot 4.6.3 sans threads et déploiement sur GitHub Pages à chaque push sur `main`. Aucun asset de jeu pour l'instant — les rendus 3D des scènes et personnages seront créés plus tard par Guillaume.
 
 ## 2. Instructions permanentes — comment je dois procéder
 
@@ -59,7 +59,8 @@
 - [ ] Fin / secret / easter eggs
 - [ ] Audio : ambiances, bruits, musique
 - [x] Interface : menu d'accueil (écran noir, titre, boutons "New Game" / "Continue" / "Settings" avec `>> ` au survol — boutons inactifs pour l'instant)
-- [ ] Interface : police VHS pour les textes de menu (style OSD magnétoscope) — style appliqué (gris clair sur noir, blanc au survol) ; fichier de police à déposer dans `fonts/` par Guillaume (voir `fonts/README.md`), puis à assigner dans la scène
+- [x] Interface : police VHS pour les textes de menu — **VT323** (Google Fonts, licence OFL) déposée dans `fonts/VT323-Regular.ttf`, intégrée via le `Theme` partagé `themes/main_theme.tres` (police par défaut + couleurs gris clair / blanc au survol) assigné au menu
+- [x] Export web + déploiement GitHub Pages automatisés (`.github/workflows/deploy_web.yml` : Godot 4.6.3, export **sans threads** pour être compatible Pages)
 - [ ] Interface : briefing de nuit, écran de game over, écran de victoire
 
 ## 4. Journal d'avancement
@@ -129,6 +130,22 @@
 - **Reste à faire :**
   - Guillaume dépose le `.ttf` dans `fonts/` et l'assigne dans `scenes/main_menu.tscn` (ou via un `Theme` partagé `themes/main_theme.tres`).
   - Guillaume rend la repo publique, active GitHub Pages (source : GitHub Actions) et pousse les fichiers pour déclencher le premier export web automatique.
+  - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
+  - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
+  - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).
+
+### 2026-11-06 — Police VHS intégrée + export web automatisé vers GitHub Pages
+- **Fait :**
+  - **Police VHS intégrée :** ajout de `fonts/VT323-Regular.ttf` (Google Fonts, licence OFL — sans ambiguïté de licence) et création du `Theme` partagé `themes/main_theme.tres` (police par défaut VT323, `default_font_size=32`, couleurs `Button`/`Label` gris clair + blanc au survol). Le thème est assigné à la racine de `scenes/main_menu.tscn` ; les `theme_override_*` redondants ont été retirés (le titre garde juste sa taille 64). Testé : la scène se charge sans erreur et le rendu change bien avec/sans le thème.
+  - **Export web + GitHub Pages :** création de `.github/workflows/deploy_web.yml` — installe Godot 4.6.3 (image `barichello/godot-ci:4.6.3`), exporte le preset "Web" et déploie sur GitHub Pages (`actions/upload-pages-artifact` + `actions/deploy-pages`) à chaque push sur `main` (ou manuellement via `workflow_dispatch`).
+  - **Correctif important :** `export_presets.cfg` passait `variant/thread_support=true`. Un export avec threads exige `SharedArrayBuffer`, donc des en-têtes COOP/COEP que **GitHub Pages ne fournit pas** → le jeu ne démarrerait pas. Le preset est passé en `variant/thread_support=false` (export vérifié : `GODOT_THREADS_ENABLED = false`). L'export a été testé en local (Godot 4.6.3 headless) et le build web chargé dans un navigateur : menu noir + texte gris clair correctement affiché, police VT323 incluse dans le `.pck`.
+  - `.gitignore` : ajout de `build/` (dossier d'export généré par la CI, non versionné).
+- **Décidé (par l'IA, à valider par Guillaume) :**
+  - Police choisie : **VT323** (OFL) plutôt que VCR OSD Mono (licence plus floue pour un dépôt public).
+  - Export web **sans threads** pour rester compatible GitHub Pages (pas de COOP/COEP possibles).
+- **Reste à faire :**
+  - **Guillaume doit activer GitHub Pages** dans Settings → Pages → Source = **GitHub Actions** (l'API GitHub ne permet pas de l'activer avec un token qui n'a pas les droits `pages`/admin ; à faire une fois côté web). Ensuite, chaque push sur `main` publiera le jeu.
+  - Brancher les boutons quand les autres scènes existeront (New Game → première nuit, Continue → reprise, Settings → réglages).
   - Guillaume va raconter le lore complet de Guillaume Alves ("ça sera long à dire") → à noter en détail dans `LORE.md` §2.2 / §2.3.
   - Préciser pour chaque personnage : apparence, personnalité, origine/mort, mécanique spéciale, jumpscare, vitesse / lenteur par nuit.
   - Continuer la narration du lore (établissement, autres personnages) et du gameplay (bureau, caméras, survie, nuits).

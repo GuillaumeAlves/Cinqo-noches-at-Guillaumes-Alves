@@ -1,19 +1,19 @@
-# Police VHS — à déposer ici
+# Police VHS — VT323 (intégrée)
 
-Le menu utilise une police style VHS / OSD (affichage de magnétoscope).
-Dépose le fichier de police dans ce dossier, par exemple :
+Le menu utilise la police **VT323** (Google Fonts, licence OFL — libre, y compris pour un dépôt public).
 
-- `fonts/VCR_OSD_MONO.ttf` (VCR OSD Mono, de Riciery Leal — gratuite, usage perso et commercial)
+- Fichier : `fonts/VT323-Regular.ttf`
+- Intégrée via un `Theme` partagé : `themes/main_theme.tres` (police par défaut, taille 32, couleurs gris clair / blanc au survol), assigné à la racine de `scenes/main_menu.tscn`.
+- Le titre garde sa taille 64 via un `theme_override_font_sizes/font_size` local.
 
-Puis, dans Godot (éditeur web ou desktop) :
+## Modifier la police ou la taille
 
-1. Clique sur le fichier `.ttf` dans le panneau Fichiers → il devient une ressource `FontFile`.
-2. Ouvre `scenes/main_menu.tscn` et assigne la police :
-   - nœud `Title` : propriété **Theme Overrides → Fonts → Font** = la police, taille 64.
-   - nœuds `NewGameButton`, `ContinueButton`, `SettingsButton` : même chose, taille 32.
-   - (Astuce : crée un `Theme` partagé `themes/main_theme.tres` avec cette police en police par défaut, pour ne pas la réassigner à chaque nouveau nœud de texte.)
-3. Vérifie que le texte s'affiche bien (la police VCR OSD Mono est une police bitmap/pixel : elle rend mieux à des tailles multiples de sa taille de base, ~21 px — 64 et 32 restent lisibles).
+- Pour changer la police de tout le menu : ouvrir `themes/main_theme.tres` et changer `default_font` (ou `default_font_size`).
+- Pour une taille ponctuelle : ajouter `theme_override_font_sizes/font_size` sur le nœud concerné.
 
-Alternative libre et sans ambiguïté de licence : **VT323** (Google Fonts, licence OFL) — téléchargeable depuis https://github.com/google/fonts/tree/main/ofl/vt323 (`VT323-Regular.ttf`). Même procédure.
+## Alternatives
 
-> Note : je ne peux pas déposer le fichier binaire de la police moi-même dans cette repo (pas d'accès à ton compte GitHub). Le code du menu est déjà prêt à recevoir la police : il suffit de la déposer ici et de l'assigner comme ci-dessus.
+- **VCR OSD Mono** (Riciery Leal) : look magnétoscope OSD, mais licence plus floue pour un dépôt public — à vérifier avant usage.
+- **VT323** : déjà en place, OFL, sans ambiguïté.
+
+> Le fichier `.ttf` est versionné dans ce dossier ; Godot génère `VT323-Regular.ttf.import` à l'import (ne pas éditer à la main).
