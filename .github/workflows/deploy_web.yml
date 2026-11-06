@@ -1,4 +1,4 @@
-name: Export Web & Deploy to GitHub Pages
+name: Export Web & Deploy to repo "play"
 
 on:
   push:
@@ -7,12 +7,10 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: "deploy-play"
+  cancel-in-progress: true
 
 env:
   GODOT_VERSION: 4.6.3
@@ -40,18 +38,40 @@ jobs:
           godot --headless --verbose --export-release "Web" "$(pwd)/build/web/index.html"
           ls -la build/web
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: web-build
           path: build/web
+          if-no-files-found: error
 
-  deploy:
+  deploy-play:
     needs: export-web
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Check that the PLAY_REPO_TOKEN secret exists
+        env:
+          TOKEN: ${{ secrets.PLAY_REPO_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "::error::Secret PLAY_REPO_TOKEN missing."
+            exit 1
+          fi
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: build/web
+
+      - name: Push build to the play repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.PLAY_REPO_TOKEN }}
+          external_repository: GuillaumeAlves/Cinqo-noches-at-Guillaumes-Alves-play
+          publish_branch: main
+          publish_dir: build/web
+          force_orphan: true
+          user_name: "github-actions[bot]"
+          user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_message: "Build web depuis ${{ github.sha }}"
