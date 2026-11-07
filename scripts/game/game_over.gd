@@ -37,6 +37,7 @@ func _ready() -> void:
 	sub.position = Vector2(0, GameConfig.VIEW_SIZE.y - 70)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(sub)
+	Sfx.play_loop("cam_static")
 	get_tree().create_timer(DURATION).timeout.connect(_back)
 
 
@@ -51,4 +52,5 @@ func _back() -> void:
 	if _done:
 		return
 	_done = true
+	Sfx.stop("cam_static")
 	get_tree().change_scene_to_file(GameConfig.SCENE_MENU)

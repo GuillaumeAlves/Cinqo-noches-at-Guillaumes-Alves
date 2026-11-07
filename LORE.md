@@ -202,6 +202,7 @@
 - HUD pendant la nuit : heure en haut à droite + numéro de nuit, « Power left » + barres d'utilisation en bas à gauche, barre des caméras en bas.
 - Écran de game over : neige + « GAME OVER » (voir §3.7).
 - Écran de victoire : « 5 AM » qui roule vers « 6 AM », puis nuit suivante directement. Après la nuit 5 : écran de fin **provisoire** (texte à remplacer).
+- **Sons (2026-11-07, demandé par Guillaume) :** sons de base pour les caméras, les portes et les jumpscares. Sons temporaires générés par le jeu, remplaçables par des fichiers (`assets/sounds/README.md`). Ambiance, musique, voix et appel téléphonique : `À compléter`.
 - **Visuels :** tout est en formes géométriques temporaires, remplaçables une par une par les rendus 3D de Guillaume en déposant les images dans `assets/renders/` (liste et tailles : `assets/renders/README.md`).
 
 ## 4. Humour absurde — éléments comiques du jeu
