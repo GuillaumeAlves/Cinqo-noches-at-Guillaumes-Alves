@@ -163,7 +163,15 @@
   - Workflow : ajout d'une étape `godot --headless --import` pour que les nouvelles images soient importées en CI.
   - Testé en local (Godot 4.6.3) : import sans erreur, simulation de nuit (déplacements, porte fermée qui renvoie l'esprit, attaques), sauvegarde/rechargement, détection d'une image déposée, captures d'écran de toutes les scènes.
 - **Décidé (par l'IA, à valider) :** valeurs et chemins de FNaF 1 ; noms de pièces en anglais ; attaquant de la panne = Super Clovis ; passage direct à la nuit suivante après « 6 AM » ; textes d'écran de fin provisoires.
-- **Reste à faire :** sons (aucun pour l'instant), appel téléphonique, effet de perspective « fausse 3D » du bureau (shader façon FNaF, optionnel), Settings, nuit 6 / custom night, mécaniques spéciales par esprit, vrais rendus 3D.
+- **Reste à faire :** ~~sons~~ (fait le 2026-11-07), appel téléphonique, effet de perspective « fausse 3D » du bureau (shader façon FNaF, optionnel), Settings, nuit 6 / custom night, mécaniques spéciales par esprit, vrais rendus 3D.
+
+### 2026-11-07 — Sons de base (caméras, portes, jumpscares)
+- **Fait :** autoload `Sfx` (`scripts/autoload/sound_manager.gd`). Même principe que les images : `assets/sounds/<nom>.ogg|wav|mp3` s'il existe, sinon son temporaire **synthétisé en code** (aucun fichier audio dans la repo). Liste : `assets/sounds/README.md`.
+  - Caméras : ouverture/fermeture de la tablette, bip de changement de caméra, brouillage quand un esprit bouge, grésillement en boucle pendant qu'on regarde (et sur l'écran de game over).
+  - Portes : fermeture, ouverture (aussi à la panne), Joey qui tape sur la porte, bouton qui ne répond plus ; bourdonnement des lumières.
+  - Jumpscare : cri commun, ou `jumpscare_<perso>` si fourni.
+  - Tous les sons sont préparés au début de la nuit (`Sfx.warm_up()`, ~60 ms). Coupés au jumpscare, à la panne et à la victoire.
+- **Note web :** le navigateur n'autorise le son qu'après un clic : le clic sur « New Game / Continue » suffit.
 
 ---
 

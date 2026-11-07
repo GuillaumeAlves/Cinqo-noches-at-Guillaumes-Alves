@@ -73,6 +73,7 @@ var _rec_blink: float = 0.0
 
 func _ready() -> void:
 	night = SaveManager.playing_night
+	Sfx.warm_up()
 	_build()
 	ai = NightAI.new()
 	ai.name = "NightAI"
@@ -105,6 +106,11 @@ func current_camera() -> String:
 # =============================================================================
 # Boucle
 # =============================================================================
+
+func _exit_tree() -> void:
+	Sfx.stop("cam_static")
+	Sfx.stop("light_buzz")
+
 
 func _process(delta: float) -> void:
 	if game_finished:
@@ -201,8 +207,10 @@ func toggle_door(side: String) -> void:
 	if power_out or game_finished or monitor_up:
 		return
 	if side_broken[side]:
+		Sfx.play("door_error")
 		return
 	door_closed[side] = not door_closed[side]
+	Sfx.play("door_close" if door_closed[side] else "door_open")
 	var door: RenderSlot = doors[side]
 	var target_y := 0.0 if door_closed[side] else -DOORWAY_LEFT.size.y
 	create_tween().tween_property(door, "position:y", target_y, DOOR_ANIM_TIME)
@@ -213,6 +221,7 @@ func toggle_light(side: String) -> void:
 	if power_out or game_finished or monitor_up:
 		return
 	if side_broken[side]:
+		Sfx.play("door_error")
 		return
 	var other := "right" if side == "left" else "left"
 	light_on[other] = false
@@ -228,6 +237,7 @@ func toggle_monitor() -> void:
 	light_on["right"] = false
 	_refresh_office()
 	var going_up := not monitor_up
+	Sfx.play("cam_open" if going_up else "cam_close")
 	# Petite animation de « tablette » qui monte / descend (rectangle noir).
 	flip_rect.visible = true
 	flip_rect.position = Vector2(0, GameConfig.VIEW_SIZE.y if going_up else 0.0)
@@ -251,11 +261,16 @@ func _set_monitor(up: bool) -> void:
 	monitor.visible = up
 	if up:
 		_glitch_time = 0.15
-		select_camera(current_cam)
+		select_camera(current_cam, false)
+		Sfx.play_loop("cam_static")
+	else:
+		Sfx.stop("cam_static")
 	_update_hud()
 
 
-func select_camera(cam: String) -> void:
+func select_camera(cam: String, with_sound: bool = true) -> void:
+	if with_sound:
+		Sfx.play("cam_switch")
 	current_cam = cam
 	_glitch_time = maxf(_glitch_time, 0.12)
 	for c: String in cam_buttons:
@@ -273,6 +288,7 @@ func _on_spirit_moved(who: String, from_room: String, to_room: String) -> void:
 	# Brouillage si on regarde la pièce que l'esprit quitte ou rejoint (comme FNaF).
 	if monitor_up and (current_cam == from_room or current_cam == to_room):
 		_glitch_time = 0.8
+		Sfx.play("cam_glitch")
 	_refresh_camera()
 	_refresh_office()
 
@@ -287,6 +303,7 @@ func _on_spirit_entered(who: String) -> void:
 
 func _on_joey_door_hit(drain: float) -> void:
 	power = maxf(power - drain, 0.0)
+	Sfx.play("door_bang")
 	# Coup sur la porte : petite secousse du bureau.
 	var tw := create_tween()
 	for i in 6:
@@ -306,6 +323,7 @@ func _on_attack(who: String) -> void:
 func _start_power_out() -> void:
 	power_out = true
 	ai.active = false
+	Sfx.stop_all()
 	if monitor_up:
 		_set_monitor(false)
 	flip_rect.visible = false
@@ -313,6 +331,7 @@ func _start_power_out() -> void:
 		light_on[side] = false
 		if door_closed[side]:
 			door_closed[side] = false
+			Sfx.play("door_open")
 			create_tween().tween_property(doors[side], "position:y", -DOORWAY_LEFT.size.y, DOOR_ANIM_TIME)
 	darkness.visible = true
 	_refresh_office()
@@ -329,6 +348,7 @@ func _win_night() -> void:
 		return
 	game_finished = true
 	ai.active = false
+	Sfx.stop_all()
 	SaveManager.complete_night()
 	get_tree().change_scene_to_file(GameConfig.SCENE_NIGHT_WIN)
 
@@ -338,6 +358,9 @@ func _play_jumpscare(who: String) -> void:
 		return
 	game_finished = true
 	ai.active = false
+	Sfx.stop_all()
+	# Cri propre à l'esprit s'il existe (jumpscare_<perso>.ogg), sinon le cri commun.
+	Sfx.play("jumpscare_" + who if Sfx.has_file("jumpscare_" + who) else "jumpscare")
 	monitor.visible = false
 	flip_rect.visible = false
 	darkness.visible = false
@@ -372,6 +395,11 @@ func _refresh_office() -> void:
 			(doorway_chars[side][who] as RenderSlot).visible = lit and ai != null and ai.is_at(who, door_room)
 		(door_buttons[side] as RenderSlot).state = "on" if door_closed[side] else "off"
 		(light_buttons[side] as RenderSlot).state = "on" if lit else "off"
+	# Bourdonnement tant qu'une lumière de couloir est allumée.
+	if light_on["left"] or light_on["right"]:
+		Sfx.play_loop("light_buzz")
+	else:
+		Sfx.stop("light_buzz")
 
 
 func _refresh_camera() -> void:

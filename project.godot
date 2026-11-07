@@ -18,6 +18,7 @@ run/main_scene="res://scenes/main_menu.tscn"
 [autoload]
 
 SaveManager="*res://scripts/autoload/save_manager.gd"
+Sfx="*res://scripts/autoload/sound_manager.gd"
 
 [display]
 
