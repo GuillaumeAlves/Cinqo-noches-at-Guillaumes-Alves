@@ -26,7 +26,7 @@ const VOLUME_DB := {
 	"door_bang": 0.0,
 	"door_error": -8.0,
 	"light_buzz": -16.0,
-	"office_ambience": -22.0,
+	"office_ambience": -10.0,
 	"jumpscare": 0.0,
 }
 ## Sons joués en boucle (le fichier fourni doit idéalement boucler proprement).
