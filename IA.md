@@ -184,6 +184,9 @@
 - **Constat :** le build était bien publié, mais le navigateur gardait l'ancienne version (GitHub Pages autorise le cache, et `index.pck` garde toujours le même nom).
 - **Fait :** le workflow renomme le pack en `index.<commit>.pck` et l'indique à Godot via `mainPack` dans `index.html` (+ balise no-cache) → chaque version a un nom unique, le navigateur la recharge forcément. Le menu affiche la version (`v <commit>`, en bas à droite), écrite par le workflow dans `scripts/data/build_info.gd` (« dev » en local).
 
+### 2026-11-08 — Néon d'ambiance plus fort
+- Demandé par Guillaume : volume de `office_ambience` passé de -22 dB à **-10 dB** (`VOLUME_DB` dans `scripts/autoload/sound_manager.gd`).
+
 ---
 
 ## 5. Notes pour les prochaines sessions
