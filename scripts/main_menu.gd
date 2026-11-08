@@ -28,6 +28,16 @@ func _ready() -> void:
 		button.pressed.connect(_on_button_pressed.bind(button))
 	_continue_night.text = "Night %d" % SaveManager.current_night
 	_stars.visible = SaveManager.game_completed
+	# Version du build (commit publié) en bas à droite, pour vérifier qu'on a la dernière.
+	var version := Label.new()
+	version.name = "Version"
+	version.text = "v " + BuildInfo.VERSION
+	version.size = Vector2(300, 30)
+	version.position = Vector2(GameConfig.VIEW_SIZE.x - 316, GameConfig.VIEW_SIZE.y - 36)
+	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	version.add_theme_font_size_override("font_size", 20)
+	version.modulate = Color(1, 1, 1, 0.4)
+	add_child(version)
 
 
 func _on_button_mouse_entered(button: Button) -> void:
