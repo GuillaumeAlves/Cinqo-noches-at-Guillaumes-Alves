@@ -173,6 +173,13 @@
   - Tous les sons sont préparés au début de la nuit (`Sfx.warm_up()`, ~60 ms). Coupés au jumpscare, à la panne et à la victoire.
 - **Note web :** le navigateur n'autorise le son qu'après un clic : le clic sur « New Game / Continue » suffit.
 
+### 2026-11-08 — Sons VHS, néon d'ambiance, correction de l'effet VHS
+- **Fait :**
+  - `cam_switch` remplacé par un bruit de magnétoscope VHS (clic de tête, souffle de bande qui flotte, ronflement 50 Hz, sifflement de tracking qui chute), hauteur variée à chaque changement de caméra.
+  - Nouveau son en boucle `office_ambience` : néon du bureau qui grésille légèrement (≠ `light_buzz`). Joué uniquement quand on est dans le bureau (caméras baissées) ; coupé sur les caméras, à la panne, au jumpscare, à la victoire.
+  - **Bug corrigé :** l'effet VHS/neige des caméras disparaissait après quelques minutes. Cause : `shaders/static.gdshader` mettait `TIME` (qui grandit sans fin) dans un `sin()` → perte de précision du GPU (surtout WebGL). Le temps est maintenant rebouclé (`mod`) et le hasard utilise un hash sans `sin()` → l'effet ne disparaît plus jamais.
+- **Règle à retenir :** ne jamais utiliser `TIME` brut dans un `sin()`/hash de shader : toujours le reboucler avec `mod()`.
+
 ---
 
 ## 5. Notes pour les prochaines sessions

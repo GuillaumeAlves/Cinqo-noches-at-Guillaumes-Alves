@@ -26,10 +26,11 @@ const VOLUME_DB := {
 	"door_bang": 0.0,
 	"door_error": -8.0,
 	"light_buzz": -16.0,
+	"office_ambience": -22.0,
 	"jumpscare": 0.0,
 }
 ## Sons joués en boucle (le fichier fourni doit idéalement boucler proprement).
-const LOOPING := ["cam_static", "light_buzz"]
+const LOOPING := ["cam_static", "light_buzz", "office_ambience"]
 
 var _streams: Dictionary = {}
 var _pool: Array[AudioStreamPlayer] = []
@@ -145,7 +146,7 @@ func _synthesize(sound: String) -> AudioStream:
 	match sound:
 		"cam_open": samples = _synth_whoosh(0.28, true)
 		"cam_close": samples = _synth_whoosh(0.24, false)
-		"cam_switch": samples = _synth_blip()
+		"cam_switch": samples = _synth_vhs_switch()
 		"cam_glitch": samples = _synth_noise(0.5, 0.9, 0.0)
 		"cam_static": samples = _synth_noise(2.0, 0.5, 0.6)
 		"door_close": samples = _synth_slam(0.55, 70.0)
@@ -153,6 +154,7 @@ func _synthesize(sound: String) -> AudioStream:
 		"door_bang": samples = _synth_bangs()
 		"door_error": samples = _synth_tone(0.25, 140.0, 0.5, true)
 		"light_buzz": samples = _synth_buzz(1.0)
+		"office_ambience": samples = _synth_neon_ambience(4.0)
 		"jumpscare": samples = _synth_scream(1.3)
 		_:
 			push_warning("Son inconnu : " + sound)
@@ -200,14 +202,42 @@ func _synth_whoosh(dur: float, rising: bool) -> PackedFloat32Array:
 	return b
 
 
-## Bip court de changement de caméra.
-func _synth_blip() -> PackedFloat32Array:
-	var b := _buf(0.09)
+## Changement de caméra façon VHS : clic de tête de lecture, souffle de bande
+## qui « flotte » (wow/flutter), ronflement 50 Hz et sifflement de tracking qui chute.
+func _synth_vhs_switch() -> PackedFloat32Array:
+	var dur := 0.42
+	var b := _buf(dur)
+	var lp := 0.0
+	var hp_prev := 0.0
+	var tone_ph := 0.0
+	var flutter_seed := randf() * TAU
 	for i in b.size():
 		var t := float(i) / MIX_RATE
-		var env := 1.0 - float(i) / b.size()
-		var sq := 1.0 if fmod(t * 1400.0, 1.0) < 0.5 else -1.0
-		b[i] = (sq * 0.25 + randf_range(-1, 1) * 0.25) * env
+		var x := float(i) / b.size()
+		# Souffle de bande filtré, amplitude qui tremble (flutter 11 Hz + 3 Hz)
+		var white := randf_range(-1, 1)
+		lp += (white - lp) * 0.45
+		var hiss := lp - hp_prev * 0.6
+		hp_prev = lp
+		var flutter := 0.65 + 0.35 * sin(TAU * 11.0 * t + flutter_seed) * sin(TAU * 3.0 * t)
+		var hiss_env := minf(1.0, x * 25.0) * pow(1.0 - x, 1.4)
+		var v := hiss * flutter * hiss_env * 0.55
+		# Ronflement secteur (50 Hz + harmonique) typique des magnétoscopes
+		v += (sin(TAU * 50.0 * t) * 0.18 + sin(TAU * 150.0 * t) * 0.06) * hiss_env
+		# Sifflement de tracking qui descend (bande qui ralentit)
+		var f := lerpf(1800.0, 420.0, x) * (1.0 + sin(TAU * 6.0 * t) * 0.03)
+		tone_ph = fmod(tone_ph + f / MIX_RATE, 1.0)
+		v += sin(TAU * tone_ph) * 0.07 * (1.0 - x)
+		# Crachotements aléatoires
+		if randf() < 0.004:
+			v += randf_range(-0.7, 0.7)
+		b[i] = v
+	# Clic sec de la tête de lecture au tout début + petit clic de fin
+	for i in mini(90, b.size()):
+		b[i] += (1.0 if (i / 6) % 2 == 0 else -1.0) * 0.6 * (1.0 - i / 90.0)
+	var end_at := int(b.size() * 0.9)
+	for i in range(end_at, mini(end_at + 60, b.size())):
+		b[i] += (1.0 if (i / 4) % 2 == 0 else -1.0) * 0.25 * (1.0 - float(i - end_at) / 60.0)
 	return b
 
 
@@ -273,6 +303,33 @@ func _synth_buzz(dur: float) -> PackedFloat32Array:
 		var v := sin(TAU * 100.0 * t) * 0.5 + sin(TAU * 200.0 * t) * 0.25 + sin(TAU * 300.0 * t) * 0.12
 		v = clampf(v * 1.6, -0.8, 0.8)
 		b[i] = v * 0.6 + randf_range(-1, 1) * 0.05
+	return b
+
+
+## Ambiance du bureau : vieux néon qui grésille LÉGÈREMENT (différent du
+## bourdonnement des lumières de couloir). Boucle de 4 s sans clic :
+## toutes les fréquences font un nombre entier de cycles sur 4 s.
+func _synth_neon_ambience(dur: float) -> PackedFloat32Array:
+	var b := _buf(dur)
+	var lp := 0.0
+	var sizzle := 0.0
+	for i in b.size():
+		var t := float(i) / MIX_RATE
+		# Ronronnement doux du ballast (60 Hz + harmoniques faibles, sinus purs)
+		var hum := sin(TAU * 60.0 * t) * 0.35 + sin(TAU * 120.0 * t) * 0.18 + sin(TAU * 240.0 * t) * 0.05
+		# Variation lente de l'intensité (0,25 Hz et 1,25 Hz → bouclent sur 4 s)
+		var swell := 0.8 + 0.12 * sin(TAU * 0.25 * t) + 0.08 * sin(TAU * 1.25 * t)
+		# Grésillement aigu léger : bruit filtré qui s'allume par petites rafales
+		var white := randf_range(-1, 1)
+		lp += (white - lp) * 0.6
+		var hiss := white - lp
+		if randf() < 0.0004:
+			sizzle = randf_range(0.4, 1.0)
+		sizzle *= 0.9993
+		var crackle := hiss * (0.05 + sizzle * 0.3)
+		b[i] = (hum * swell + crackle) * 0.5
+	# Pas de raccord nécessaire : le ronronnement est parfaitement périodique sur 4 s
+	# et le grésillement est du bruit (aucune coupure audible au bouclage).
 	return b
 
 
