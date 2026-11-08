@@ -180,6 +180,10 @@
   - **Bug corrigé :** l'effet VHS/neige des caméras disparaissait après quelques minutes. Cause : `shaders/static.gdshader` mettait `TIME` (qui grandit sans fin) dans un `sin()` → perte de précision du GPU (surtout WebGL). Le temps est maintenant rebouclé (`mod`) et le hasard utilise un hash sans `sin()` → l'effet ne disparaît plus jamais.
 - **Règle à retenir :** ne jamais utiliser `TIME` brut dans un `sin()`/hash de shader : toujours le reboucler avec `mod()`.
 
+### 2026-11-08 — Version en ligne pas à jour (cache navigateur)
+- **Constat :** le build était bien publié, mais le navigateur gardait l'ancienne version (GitHub Pages autorise le cache, et `index.pck` garde toujours le même nom).
+- **Fait :** le workflow renomme le pack en `index.<commit>.pck` et l'indique à Godot via `mainPack` dans `index.html` (+ balise no-cache) → chaque version a un nom unique, le navigateur la recharge forcément. Le menu affiche la version (`v <commit>`, en bas à droite), écrite par le workflow dans `scripts/data/build_info.gd` (« dev » en local).
+
 ---
 
 ## 5. Notes pour les prochaines sessions

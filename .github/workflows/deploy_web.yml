@@ -32,6 +32,12 @@ jobs:
           fi
           ls -la ~/.local/share/godot/export_templates/
 
+      - name: Write build version (affichée dans le menu)
+        run: |
+          SHORT=$(echo "$GITHUB_SHA" | cut -c1-7)
+          sed -i "s/^const VERSION := .*/const VERSION := \"$SHORT\"/" scripts/data/build_info.gd
+          cat scripts/data/build_info.gd
+
       - name: Import assets (nouvelles images de rendus)
         run: godot --headless --import || true
 
@@ -39,6 +45,18 @@ jobs:
         run: |
           mkdir -vp build/web
           godot --headless --verbose --export-release "Web" "$(pwd)/build/web/index.html"
+          ls -la build/web
+
+      - name: Cache busting (nom de fichier unique à chaque version)
+        # GitHub Pages laisse les navigateurs garder les fichiers en cache : on renomme
+        # le pack du jeu avec le commit pour forcer le chargement de la nouvelle version.
+        run: |
+          SHORT=$(echo "$GITHUB_SHA" | cut -c1-7)
+          mv build/web/index.pck "build/web/index.$SHORT.pck"
+          sed -i "s/\"fileSizes\":{\"index.pck\"/\"mainPack\":\"index.$SHORT.pck\",\"fileSizes\":{\"index.$SHORT.pck\"/" build/web/index.html
+          sed -i 's#<head>#<head>\n<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">#' build/web/index.html
+          grep -q "index.$SHORT.pck" build/web/index.html || { echo "::error::mainPack non remplacé dans index.html"; exit 1; }
+          grep -o 'const GODOT_CONFIG = [^;]*;' build/web/index.html
           ls -la build/web
 
       - name: Upload build artifact
