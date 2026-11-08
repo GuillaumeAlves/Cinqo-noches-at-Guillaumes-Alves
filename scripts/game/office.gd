@@ -85,6 +85,7 @@ func _ready() -> void:
 	ai.joey_door_hit.connect(_on_joey_door_hit)
 	ai.joey_stage_changed.connect(func(_s: int) -> void: _refresh_camera())
 	_refresh_all()
+	_update_ambience()
 
 
 # =============================================================================
@@ -110,6 +111,16 @@ func current_camera() -> String:
 func _exit_tree() -> void:
 	Sfx.stop("cam_static")
 	Sfx.stop("light_buzz")
+	Sfx.stop("office_ambience")
+
+
+## Néon d'ambiance : uniquement quand on est dans le bureau (caméras baissées),
+## coupé pendant les caméras, la panne de courant, le jumpscare et la victoire.
+func _update_ambience() -> void:
+	if not monitor_up and not power_out and not game_finished:
+		Sfx.play_loop("office_ambience")
+	else:
+		Sfx.stop("office_ambience")
 
 
 func _process(delta: float) -> void:
@@ -238,6 +249,8 @@ func toggle_monitor() -> void:
 	_refresh_office()
 	var going_up := not monitor_up
 	Sfx.play("cam_open" if going_up else "cam_close")
+	if going_up:
+		Sfx.stop("office_ambience")
 	# Petite animation de « tablette » qui monte / descend (rectangle noir).
 	flip_rect.visible = true
 	flip_rect.position = Vector2(0, GameConfig.VIEW_SIZE.y if going_up else 0.0)
@@ -265,12 +278,14 @@ func _set_monitor(up: bool) -> void:
 		Sfx.play_loop("cam_static")
 	else:
 		Sfx.stop("cam_static")
+		_update_ambience()
 	_update_hud()
 
 
 func select_camera(cam: String, with_sound: bool = true) -> void:
 	if with_sound:
-		Sfx.play("cam_switch")
+		# Légère variation de hauteur pour que le bruit VHS ne soit jamais identique.
+		Sfx.play("cam_switch", randf_range(0.9, 1.1))
 	current_cam = cam
 	_glitch_time = maxf(_glitch_time, 0.12)
 	for c: String in cam_buttons:
