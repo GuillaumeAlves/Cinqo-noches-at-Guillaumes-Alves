@@ -52,15 +52,30 @@ Personnage dans une caméra (calque transparent 1600 × 720, même cadrage que l
 | `clovis` (Super Clovis) | cam_1a, cam_1b, cam_5, cam_2a, cam_3, cam_2b |
 | `paulhenri` (White Paul-Henri) | cam_1a, cam_1b, cam_7, cam_4a, cam_4b (cam_6 = audio) |
 | `guillaume` (Guillaume Alves, nuit 5) | cam_1a, cam_1b, cam_7, cam_4a, cam_4b (cam_6 = audio) |
-| `joey` (Joey Joestar) | `cam_2a_joey.png` = Joey qui court dans le couloir |
+| `joey` (Joey Joestar) | `cam_2a_joey.gif` (ou `.png`) = Joey qui court dans le couloir — **GIF conseillé** |
 
 Cachette de Joey (cam 1C) — une image par étape, calque sur `cam_1c.png` :
 `cams/cam_1c_joey_0.png` (rideau fermé), `_1` (il regarde), `_2` (il sort), `_3` (parti, rideau ouvert).
 
 ## Jumpscares (`jumpscares/`) — 1280 × 720
 
-`jumpscares/clovis.png`, `paulhenri.png`, `joey.png`, `guillaume.png`
-(une image fixe pour l'instant, zoomée et secouée par le jeu).
+`jumpscares/clovis.gif`, `paulhenri.gif`, `joey.gif`, `guillaume.gif`, `adam.gif`
+- **GIF (conseillé) :** joué une fois en entier, plein écran, sans zoom (durée du jumpscare = durée du GIF, entre 1 et 3 s).
+- **PNG :** image fixe, zoomée et secouée par le jeu.
+
+## Adam (secret)
+
+- `office/adam.gif` ou `.png` — 360 × 600, **fond transparent** : Adam debout dans le bureau (centré sur l'endroit où on regarde).
+- `jumpscares/adam.gif` ou `.png` — 1280 × 720 : son jumpscare (après, le jeu se ferme).
+
+## GIFs animés (n'importe quel emplacement)
+
+**Toutes les images peuvent être un `.gif`** au lieu d'un `.png` (même nom, même dossier) : bureau, caméras, personnages…
+Si les deux existent, le GIF est prioritaire. Le GIF tourne en boucle (sauf les jumpscares, joués une fois).
+
+Godot ne lit pas les GIFs directement : à la publication, le workflow les découpe automatiquement
+(`tools/convert_gifs.py` → `assets/renders/_gif/`, dossier généré, ignoré par git). Rien à faire de ton côté.
+Pour tester en local dans Godot : `python3 tools/convert_gifs.py` (nécessite `pip install pillow`).
 
 ## Interface (`ui/`)
 

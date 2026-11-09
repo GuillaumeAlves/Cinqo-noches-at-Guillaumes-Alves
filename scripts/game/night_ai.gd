@@ -202,6 +202,44 @@ func _set_location(who: String, room: String) -> void:
 	moved.emit(who, from, room)
 
 
+# =============================================================================
+# Commandes de test (panneau admin)
+# =============================================================================
+
+## Place un esprit directement dans une pièce (id de caméra, left_door, right_door, office).
+func force_location(who: String, room: String) -> void:
+	if who == "joey":
+		return
+	in_office.erase(who)
+	if room == OFFICE:
+		in_office.append(who)
+		_in_office_timer = 0.0
+	_set_location(who, room)
+
+
+## Joey : étape 0 (caché) à 2 (il sort) dans sa cachette.
+func force_joey_stage(stage: int) -> void:
+	joey_run_timer = -1.0
+	joey_stage = clampi(stage, 0, 2)
+	_set_location("joey", "cam_1c")
+	joey_stage_changed.emit(joey_stage)
+
+
+## Joey sort de sa cachette et court vers la porte gauche.
+func force_joey_run() -> void:
+	joey_stage = 3
+	_set_location("joey", "cam_2a")
+	joey_run_timer = GameConfig.JOEY_RUN_TIME
+	joey_stage_changed.emit(joey_stage)
+
+
+## Joey arrive tout de suite à la porte gauche (frappe si fermée, attaque sinon).
+func force_joey_arrive() -> void:
+	if joey_run_timer < 0.0:
+		force_joey_run()
+	joey_run_timer = 0.01
+
+
 func _attack(who: String) -> void:
 	if not active:
 		return

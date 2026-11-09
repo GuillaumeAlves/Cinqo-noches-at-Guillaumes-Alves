@@ -14,6 +14,7 @@ const CHAR_STYLE := {
 	"paulhenri": {"body": Color(0.92, 0.92, 0.95), "eye": Color(0.05, 0.05, 0.05), "accent": Color(0.15, 0.15, 0.15)},
 	"joey": {"body": Color(0.9, 0.48, 0.12), "eye": Color(1, 0.9, 0.2), "accent": Color(1, 0.85, 0.1)},
 	"guillaume": {"body": Color(0.45, 0.29, 0.16), "eye": Color(0.9, 0.9, 1), "accent": Color(0.08, 0.08, 0.08)},
+	"adam": {"body": Color(0.06, 0.06, 0.07), "eye": Color(1, 1, 1), "accent": Color(0.6, 0, 0)},
 }
 
 ## Position d'un personnage dans chaque caméra (fractions de l'image : x, y, largeur, hauteur).
@@ -54,6 +55,7 @@ static func draw(ci: CanvasItem, id: String, state: String, size: Vector2) -> vo
 		"panel": _panel(ci, size)
 		"button": _button(ci, size, arg, state)
 		"char_door": _char_door(ci, size, arg)
+		"char_office": _character(ci, arg, Rect2(Vector2.ZERO, size), 1.0)
 		"cam": _cam(ci, size, arg)
 		"char_cam": _char_cam(ci, size, arg, state)
 		"jumpscare": _jumpscare(ci, size, arg)

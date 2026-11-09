@@ -112,6 +112,11 @@
 3. `À compléter`
 
 ### 2.6 Secrets, mystères & révélations
+- **Adam — personnage secret (confirmé par Guillaume, 2026-11-09) :**
+  - Chance d'apparaître : **1 / 10 000** quand on baisse la tablette alors qu'on regardait la **cam 1A** ; **1 / 5 000** à la nuit 5 (« au bout de la 5e nuit »).
+  - Il apparaît **dans le bureau**, devant le joueur.
+  - Si on ne relève pas la tablette dans les **2 secondes**, il fait son jumpscare **et le jeu se ferme**. Si on la relève à temps, il disparaît.
+  - Apparence, histoire, lien avec les autres : `À compléter` (pour l'instant : silhouette noire aux yeux blancs, provisoire).
 - `À compléter` — ce que le joueur découvre au fil des nuits, les twists, les documents, les appels, les easter eggs de lore.
 
 ## 3. Gameplay
@@ -224,6 +229,10 @@
 - `À compléter`
 
 ## 7. Historique des ajouts à ce fichier
+
+### 2026-11-09 — Adam (secret), GIFs, panneau admin
+- **Confirmé par Guillaume :** personnage secret Adam (règles au §2.6) ; jumpscares et Joey qui court dans le couloir en GIF.
+- **Outil (pas du lore) :** panneau admin de test sur la touche P, dans `admin/` (à supprimer quand il n'en voudra plus).
 
 ### 2026-11-06 — Base de jeu FNaF complète (provisoire)
 - **Confirmé par Guillaume :** 5 nuits ; base de « FNaF normal » ; compteur de temps jusqu'à la fin de la nuit ; nuits sauvegardées dans le navigateur ; écran de mort et écran de victoire ; bureau qu'on regarde en tournant la tête (scroll horizontal) ; personnages en formes géométriques simples, remplacés plus tard par ses rendus 3D réalistes (« fausse 3D »).
