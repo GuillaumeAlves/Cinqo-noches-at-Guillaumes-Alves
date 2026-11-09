@@ -187,6 +187,12 @@
 ### 2026-11-08 — Néon d'ambiance plus fort
 - Demandé par Guillaume : volume de `office_ambience` passé de -22 dB à **-10 dB** (`VOLUME_DB` dans `scripts/autoload/sound_manager.gd`).
 
+### 2026-11-09 — GIFs, Adam (secret), panneau admin
+- **GIFs :** n'importe quel emplacement d'image accepte un `.gif` (prioritaire sur le `.png`). `RenderSlot` lit `assets/renders/_gif/<chemin>/frames.tres`, généré par `tools/convert_gifs.py` (Pillow) — lancé par le workflow avant l'import Godot ; `_gif/` est ignoré par git. Jumpscare en GIF : joué une fois sans zoom (durée = GIF, bornée 1–3 s) ; sinon image fixe zoomée.
+- **Adam :** `office.gd` (`_roll_adam`, `spawn_adam`, `_process_adam`, `_quit_after_adam`) ; réglages dans `GameConfig` (`ADAM_CHANCE` par nuit = 10000 ×4 puis 5000, `ADAM_GRACE_TIME` = 2 s, `ADAM_TRIGGER_CAMERA` = cam_1a). Tirage quand on baisse la tablette depuis la cam 1A ; relever la tablette le fait disparaître ; sinon jumpscare puis `get_tree().quit()` (sur le web, la page reste noire).
+- **Panneau admin :** dossier autonome `admin/` (script, thème, icône, README). Chargé par `office._load_admin_panel()` seulement s'il existe → **supprimer le dossier suffit**. Touche P. Utilise l'API debug d'`office.gd` (`debug_*`) et de `night_ai.gd` (`force_location`, `force_joey_stage`, `force_joey_run`, `force_joey_arrive`) — ces fonctions peuvent rester même sans le panneau.
+- **Testé :** GIF de test (Joey cam 2A + jumpscare) animé, Adam (apparition, disparition en relevant, pas d'apparition hors cam 1A), panneau (positions, jumpscares, verrouillage du bureau quand il est ouvert).
+
 ---
 
 ## 5. Notes pour les prochaines sessions

@@ -38,6 +38,16 @@ jobs:
           sed -i "s/^const VERSION := .*/const VERSION := \"$SHORT\"/" scripts/data/build_info.gd
           cat scripts/data/build_info.gd
 
+      - name: Convert GIFs (jumpscares, Joey dans le couloir...)
+        # Godot ne lit pas les GIFs : on les découpe en images + SpriteFrames (tools/convert_gifs.py).
+        run: |
+          if find assets/renders -iname '*.gif' -not -path '*/_gif/*' | grep -q .; then
+            python3 -c "import PIL" 2>/dev/null || { apt-get update -qq && apt-get install -y -qq python3 python3-pil >/dev/null; }
+            python3 tools/convert_gifs.py
+          else
+            echo "Aucun GIF."
+          fi
+
       - name: Import assets (nouvelles images de rendus)
         run: godot --headless --import || true
 

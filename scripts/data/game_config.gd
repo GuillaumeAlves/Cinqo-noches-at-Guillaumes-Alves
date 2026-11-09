@@ -39,7 +39,18 @@ const CHARACTER_NAMES := {
 	"paulhenri": "White Paul-Henri",
 	"joey": "Joey Joestar",
 	"guillaume": "Guillaume Alves",
+	"adam": "Adam",
 }
+
+# --- Personnages secrets -------------------------------------------------------
+## Adam : peut apparaître dans le bureau quand on baisse la tablette alors qu'on
+## regardait la cam 1A. Chance = 1 sur ADAM_CHANCE[nuit] (index 0 = nuit 1).
+const ADAM_CHANCE := [10000, 10000, 10000, 10000, 5000]
+## Temps (s) pour relever la tablette avant qu'Adam attaque. S'il attaque, le jeu se ferme.
+const ADAM_GRACE_TIME := 2.0
+const ADAM_TRIGGER_CAMERA := "cam_1a"
+## Position / taille d'Adam dans le bureau (il apparaît au centre de ce qu'on regarde).
+const ADAM_SIZE := Vector2(360, 600)
 
 ## Intervalle (secondes) entre deux « chances de bouger » (comme FNaF : jet de 1 à 20 ≤ niveau d'IA).
 const MOVE_INTERVAL := {

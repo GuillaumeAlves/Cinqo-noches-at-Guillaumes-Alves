@@ -26,3 +26,6 @@ mono_crash.*.json
 
 # Export web (généré par la CI, non versionné)
 build/
+
+# Images générées depuis les GIFs par tools/convert_gifs.py (régénérées en CI)
+assets/renders/_gif/

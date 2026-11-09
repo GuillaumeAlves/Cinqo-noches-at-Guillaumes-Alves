@@ -22,4 +22,4 @@ Volumes réglables dans `VOLUME_DB` en haut de `scripts/autoload/sound_manager.g
 | `office_ambience.ogg` | Néon du bureau qui grésille légèrement, en continu tant qu'on est dans le bureau (coupé sur les caméras, à la panne, au jumpscare) | **oui** |
 | `jumpscare.ogg` | Cri du jumpscare (le même pour tous pour l'instant) | non |
 
-Cri propre à un esprit : `jumpscare_clovis.ogg`, `jumpscare_paulhenri.ogg`, `jumpscare_joey.ogg`, `jumpscare_guillaume.ogg` — s'il existe, il remplace `jumpscare.ogg` pour cet esprit.
+Cri propre à un esprit : `jumpscare_clovis.ogg`, `jumpscare_paulhenri.ogg`, `jumpscare_joey.ogg`, `jumpscare_guillaume.ogg`, `jumpscare_adam.ogg` — s'il existe, il remplace `jumpscare.ogg` pour cet esprit.

@@ -38,6 +38,19 @@ var scroll_x: float = 0.0
 
 var ai: NightAI
 
+## Bloque les commandes du joueur (scroll, caméras, Espace) — utilisé par le panneau admin.
+var input_locked: bool = false
+
+# --- Secret : Adam ---
+var adam_active: bool = false
+var adam_timer: float = 0.0
+var adam_slot: RenderSlot
+## Test : Adam apparaît à chaque fois (au lieu de 1/10000). Réglé par le panneau admin.
+var debug_adam_always: bool = false
+
+## Panneau admin optionnel : supprimer le dossier admin/ suffit à l'enlever du jeu.
+const ADMIN_PANEL_SCRIPT := "res://admin/admin_panel.gd"
+
 # --- Nœuds construits dans _build() ---
 var world: Control
 var doorways := {}      # side -> Control (clip)
@@ -86,6 +99,18 @@ func _ready() -> void:
 	ai.joey_stage_changed.connect(func(_s: int) -> void: _refresh_camera())
 	_refresh_all()
 	_update_ambience()
+	_load_admin_panel()
+
+
+func _load_admin_panel() -> void:
+	if not (ResourceLoader.exists(ADMIN_PANEL_SCRIPT) or FileAccess.file_exists(ADMIN_PANEL_SCRIPT + ".remap")):
+		return
+	var script: Script = load(ADMIN_PANEL_SCRIPT)
+	if script == null:
+		return
+	var panel: Node = script.new()
+	panel.name = "AdminPanel"
+	add_child(panel)
 
 
 # =============================================================================
@@ -132,6 +157,7 @@ func _process(delta: float) -> void:
 	_process_power(delta)
 	_process_scroll(delta)
 	_process_monitor_fx(delta)
+	_process_adam(delta)
 
 
 func _process_time(delta: float) -> void:
@@ -168,7 +194,7 @@ func usage() -> int:
 
 
 func _process_scroll(delta: float) -> void:
-	if monitor_up:
+	if monitor_up or input_locked:
 		return
 	var max_scroll := GameConfig.OFFICE_SIZE.x - GameConfig.VIEW_SIZE.x
 	var dir := 0.0
@@ -202,7 +228,7 @@ func _process_monitor_fx(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if game_finished or power_out:
+	if game_finished or power_out or input_locked:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
@@ -248,9 +274,13 @@ func toggle_monitor() -> void:
 	light_on["right"] = false
 	_refresh_office()
 	var going_up := not monitor_up
+	var cam_before_lowering := current_cam
 	Sfx.play("cam_open" if going_up else "cam_close")
 	if going_up:
 		Sfx.stop("office_ambience")
+		# Relever la tablette à temps fait disparaître Adam.
+		if adam_active:
+			_hide_adam()
 	# Petite animation de « tablette » qui monte / descend (rectangle noir).
 	flip_rect.visible = true
 	flip_rect.position = Vector2(0, GameConfig.VIEW_SIZE.y if going_up else 0.0)
@@ -266,6 +296,8 @@ func toggle_monitor() -> void:
 			_set_monitor(true)
 		else:
 			ai.on_monitor_lowered()
+			if not game_finished and cam_before_lowering == GameConfig.ADAM_TRIGGER_CAMERA:
+				_roll_adam()
 	)
 
 
@@ -379,16 +411,124 @@ func _play_jumpscare(who: String) -> void:
 	monitor.visible = false
 	flip_rect.visible = false
 	darkness.visible = false
+	adam_slot.visible = false
 	jumpscare_slot.image_base = "jumpscares/" + who
 	jumpscare_slot.placeholder_id = "jumpscare/" + who
 	jumpscare_slot.visible = true
 	jumpscare_slot.pivot_offset = GameConfig.VIEW_SIZE / 2
-	jumpscare_slot.scale = Vector2(0.4, 0.4)
 	var tw := create_tween()
-	tw.tween_property(jumpscare_slot, "scale", Vector2(1.15, 1.15), 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	for i in 12:
-		tw.tween_property(jumpscare_slot, "position", Vector2(randf_range(-25, 25), randf_range(-25, 25)), 0.06)
-	tw.tween_callback(func() -> void: get_tree().change_scene_to_file(GameConfig.SCENE_GAME_OVER))
+	var duration := 0.9
+	if jumpscare_slot.has_animation():
+		# GIF : on le joue tel quel (plein écran, sans zoom), avec une légère secousse.
+		duration = clampf(jumpscare_slot.animation_length(), 1.0, 3.0)
+		jumpscare_slot.scale = Vector2.ONE
+		jumpscare_slot.restart_animation()
+		var steps := int(duration / 0.06)
+		for i in steps:
+			tw.tween_property(jumpscare_slot, "position", Vector2(randf_range(-8, 8), randf_range(-8, 8)), 0.06)
+	else:
+		# Image fixe / forme : zoom brutal + secousse.
+		jumpscare_slot.scale = Vector2(0.4, 0.4)
+		tw.tween_property(jumpscare_slot, "scale", Vector2(1.15, 1.15), 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		for i in 12:
+			tw.tween_property(jumpscare_slot, "position", Vector2(randf_range(-25, 25), randf_range(-25, 25)), 0.06)
+	if who == "adam":
+		tw.tween_callback(_quit_after_adam)
+	else:
+		tw.tween_callback(func() -> void: get_tree().change_scene_to_file(GameConfig.SCENE_GAME_OVER))
+
+
+# =============================================================================
+# Secret : Adam
+# =============================================================================
+
+## Tirage au sort quand on baisse la tablette en venant de la cam 1A.
+func _roll_adam() -> void:
+	var odds: int = GameConfig.ADAM_CHANCE[clampi(night, 1, GameConfig.ADAM_CHANCE.size()) - 1]
+	if debug_adam_always or randi_range(1, odds) == 1:
+		spawn_adam()
+
+
+## Adam apparaît dans le bureau, au centre de ce que le joueur regarde.
+func spawn_adam() -> void:
+	if game_finished or adam_active:
+		return
+	adam_active = true
+	adam_timer = GameConfig.ADAM_GRACE_TIME
+	adam_slot.size = GameConfig.ADAM_SIZE
+	adam_slot.position = Vector2(
+		scroll_x + (GameConfig.VIEW_SIZE.x - GameConfig.ADAM_SIZE.x) / 2.0,
+		GameConfig.OFFICE_SIZE.y - GameConfig.ADAM_SIZE.y - 20.0)
+	adam_slot.visible = true
+	adam_slot.restart_animation()
+
+
+func _hide_adam() -> void:
+	adam_active = false
+	adam_slot.visible = false
+
+
+func _process_adam(delta: float) -> void:
+	if not adam_active:
+		return
+	# Adam n'attaque que si on reste dans le bureau (tablette baissée).
+	if monitor_up or monitor_animating:
+		return
+	adam_timer -= delta
+	if adam_timer <= 0.0:
+		adam_active = false
+		_play_jumpscare("adam")
+
+
+## Après le jumpscare d'Adam, le jeu se ferme (écran noir sur le web).
+func _quit_after_adam() -> void:
+	var black := ColorRect.new()
+	black.color = Color.BLACK
+	black.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(black)
+	Sfx.stop_all()
+	get_tree().create_timer(0.4).timeout.connect(func() -> void: get_tree().quit())
+
+
+# =============================================================================
+# Commandes de test (utilisées par le panneau admin, sans effet en jeu normal)
+# =============================================================================
+
+func debug_jumpscare(who: String) -> void:
+	_play_jumpscare(who)
+
+
+func debug_power_out() -> void:
+	if not power_out and not game_finished:
+		power = 0.0
+		_start_power_out()
+
+
+func debug_set_power(value: float) -> void:
+	if power_out:
+		return
+	power = clampf(value, 0.0, 100.0)
+	_update_hud()
+
+
+func debug_next_hour() -> void:
+	elapsed = (floorf(elapsed / GameConfig.HOUR_SECONDS) + 1.0) * GameConfig.HOUR_SECONDS
+
+
+func debug_win_night() -> void:
+	_win_night()
+
+
+func debug_set_location(who: String, room: String) -> void:
+	ai.force_location(who, room)
+	if room == NightAI.OFFICE:
+		_on_spirit_entered(who)
+	else:
+		var side: String = NightAI.DOOR_SIDE.get(who, "")
+		if side != "" and not ai.in_office.any(func(w: String) -> bool: return NightAI.DOOR_SIDE.get(w, "") == side):
+			side_broken[side] = false
+	_refresh_camera()
+	_refresh_office()
 
 
 # =============================================================================
@@ -508,6 +648,10 @@ func _build() -> void:
 		door_buttons[side] = _button_slot(panel, "DoorButton", Rect2(Vector2(bx, 25), BUTTON_SIZE), "office/button_door_" + side, "button/door", toggle_door.bind(side))
 		light_buttons[side] = _button_slot(panel, "LightButton", Rect2(Vector2(bx, 130), BUTTON_SIZE), "office/button_light_" + side, "button/light", toggle_light.bind(side))
 
+	# --- Adam (secret), dans le bureau, caché par défaut ---
+	adam_slot = _slot(world, "Adam", Rect2(Vector2.ZERO, GameConfig.ADAM_SIZE), "office/adam", "char_office/adam")
+	adam_slot.visible = false
+
 	# --- Noir de la panne de courant ---
 	darkness = ColorRect.new()
 	darkness.name = "Darkness"
@@ -613,7 +757,7 @@ func _build() -> void:
 		cam_bar.add_child(bg)
 		_label(cam_bar, "^^  CAMERAS  ^^", Vector2(0, 2), 32, CAM_BAR_RECT.size.x, HORIZONTAL_ALIGNMENT_CENTER)
 	cam_bar.mouse_entered.connect(func() -> void:
-		if _cam_bar_armed:
+		if _cam_bar_armed and not input_locked:
 			_cam_bar_armed = false
 			toggle_monitor()
 	)
